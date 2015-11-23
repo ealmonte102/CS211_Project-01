@@ -34,7 +34,7 @@ void Student::generateNextID( ) {
 	}
 }
 
-//Constructors
+// Constructors
 Student::Student( ) : lastName(""), firstName(""), idAsNum(-1),
                       id(""), gpa(-1.0), credits(-1), standing("") { }
 
@@ -55,7 +55,7 @@ Student::~Student( ) {
 	unusedID.push(idAsNum);
 }
 
-//Accessors
+// Accessors
 int Student::getCredits( ) const {
 	return credits;
 }
@@ -68,6 +68,7 @@ const Date& Student::getDob( ) const {
 	return dob;
 }
 
+// Returns the first name and last name of the student seperated by a space.
 std::string Student::getFullName( ) const {
 	return firstName + " " + lastName;
 }
@@ -92,14 +93,10 @@ std::string Student::getStanding( ) const {
 	return standing;
 }
 
-//Mutators
+// Mutators
+// If the number pass is negative, the default value of 0 will be used.
 void Student::setCredits(int creds) {
-	if (creds < 0) {
-		cout << "Negative number of credits entered. The default value of 0 will be used.\n";
-		credits = 0;
-	} else {
-		credits = creds;
-	}
+	creds < 0 ? credits = 0 : credits = creds;
 	setStanding();
 }
 
@@ -148,7 +145,7 @@ void Student::setStanding( ) {
 	}
 }
 
-//Overloaded Operators
+// Overloaded Operators
 bool Student::operator==(const Student& otherStudent) const {
 	return (lastName == otherStudent.lastName &&
 		firstName == otherStudent.firstName &&
@@ -179,9 +176,6 @@ bool Student::operator<(const Student& otherStudent) const {
 	}
 	return id < otherStudent.id;
 }
-
-//"Zokus"
-//"Petrou"
 
 bool Student::operator<=(const Student& otherStudent) const {
 	return !(*this > otherStudent);
