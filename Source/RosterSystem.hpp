@@ -12,8 +12,10 @@ public:
 	~RosterSystem ( );
 
 	friend std::ostream& operator<<(std::ostream& output, const RosterSystem& rhs);
+	
+	void addRoster ( );
 
-	void selectRoster ( );
+	void removeRoster (std::string courseNumber);
 
 private:
 	RosterSystem (const RosterSystem& rhs) = delete;
@@ -22,11 +24,10 @@ private:
 
 	void grow ( );
 
-	void addRoster ();
+	int findRoster (std::string courseCode) const;
 
-	void removeRoster (std::string courseNumber);
-
-	enum loginFlag {
+	enum findFlags { NOT_FOUND = -1 };
+	enum loginFlags {
 		NOT_LOGGED, USER, SUPERVISOR
 	} loginStatus;
 	int size;
