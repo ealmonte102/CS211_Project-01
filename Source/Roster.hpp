@@ -30,6 +30,8 @@ public:
 	//Allows a list of students to be passed. Will add as many students as possible in sequential order, until the capacity has been reached.
 	void addStudent(Student* newStudents[], int numOfStudents);
 
+	Student* getStudent (std::string lastName) const;
+	
 	//Removes the student located at a particular index in the roster.
 	void removeStudent(std::string lastName);
 
@@ -69,7 +71,7 @@ private:
 
 	enum searchFlags {
 		STUDENT_NOT_FOUND = -2,
-		DONT_EDIT_STUDENT
+		NONE_CHOSEN
 	};
 };
 #endif //ROSTER_HPP

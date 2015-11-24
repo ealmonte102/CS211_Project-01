@@ -67,6 +67,43 @@ void Roster::addStudent(Student* newStudents[], int numOfStudents) {
 	}
 }
 
+Student* Roster::getStudent (std::string lastName) const {
+	int location = findStudent (lastName);
+	if (location != STUDENT_NOT_FOUND || location != NONE_CHOSEN) {
+		return studentList[location];
+	}
+	return nullptr;
+}
+
+//Test various components of the Roster class ([], <<, >>, removeStudent(), sort(), removeAll()).
+void Roster::driver ( ) {
+	cout << "=====Testing >> operator=====\n";
+	cin >> *this;
+
+	cout << "=====Testing << operator=====\n";
+	cout << *this << "\n";
+
+	if (studentList[0] != nullptr) {
+		cout << "=====Testing [] operator=====\n";
+		cout << "Roster[0]:\n" << (*this)[0] << "\n";
+	}
+
+	cout << "=====Testing removeStudent=====\n";
+	cout << "Please enter a last name: ";
+	string inputLastName;
+	getline (cin, inputLastName);
+	removeStudent (inputLastName);
+	cout << "After removeStudent(" << inputLastName << "):\n" << *this << "\n";
+
+	cout << "=====Testing sort()=====\n";
+	sortUp ( );
+	cout << *this << "\n";
+
+	cout << "=====Testing removeAll()=====\n";
+	removeAll ( );
+	cout << *this << "\n";
+}
+
 //Removes all students from the roster. Capacity is left unchanged.
 void Roster::removeAll( ) {
 	while (numEnrolled > 0) {
@@ -93,7 +130,7 @@ int Roster::getNumOfCredits( ) const {
 //Removes student from the current roster.
 void Roster::removeStudent(string lastName) {
 	int location = findStudent(lastName);
-	if (location != STUDENT_NOT_FOUND && location != DONT_EDIT_STUDENT) {
+	if (location != STUDENT_NOT_FOUND && location != NONE_CHOSEN) {
 		//Shift all the students over to the left in order to avoid empty gaps.
 		for (int i = location; i < numEnrolled; ++i) {
 			studentList[i] = studentList[i + 1];
@@ -101,38 +138,8 @@ void Roster::removeStudent(string lastName) {
 		--numEnrolled;
 	}
 }
-
-//Test various components of the Roster class ([], <<, >>, removeStudent(), sort(), removeAll()).
-void Roster::driver( ) {
-	cout << "=====Testing >> operator=====\n";
-	cin >> *this;
-
-	cout << "=====Testing << operator=====\n";
-	cout << *this << "\n";
-
-	if (studentList[0] != nullptr) {
-		cout << "=====Testing [] operator=====\n";
-		cout << "Roster[0]:\n" << (*this)[0] << "\n";
-	}
-
-	cout << "=====Testing removeStudent=====\n";
-	cout << "Please enter a last name: ";
-	string inputLastName;
-	getline(cin, inputLastName);
-	removeStudent(inputLastName);
-	cout << "After removeStudent(" << inputLastName << "):\n" << *this << "\n";
-
-	cout << "=====Testing sort()=====\n";
-	sortUp();
-	cout << *this << "\n";
-
-	cout << "=====Testing removeAll()=====\n";
-	removeAll();
-	cout << *this << "\n";
-}
-
 //If found, returns the index of a student in studentList otherwise returns STUDENT_NOT_FOUND
-//if none are found, or DONT_EDIT_STUDENT if user wishes to quit without choosing a student.
+//if none are found, or NONE_CHOSEN if user wishes to quit without choosing a student.
 int Roster::findStudent(string lastName) const {
 	//foundStudents: Holds the indices of where the students are located.
 	//numFound: Holds the a count referring to the number of students found.
@@ -145,7 +152,7 @@ int Roster::findStudent(string lastName) const {
 		return STUDENT_NOT_FOUND;
 	}
 
-	int studentIndex = DONT_EDIT_STUDENT;
+	int studentIndex = NONE_CHOSEN;
 	int userChoice = -1;
 	cout << "Please choose a student(0 to quit): ";
 	while (userChoice < 0 || userChoice > numFound) {
