@@ -30,7 +30,7 @@ public:
 	//Allows a list of students to be passed. Will add as many students as possible in sequential order, until the capacity has been reached.
 	void addStudent(Student* newStudents[], int numOfStudents);
 
-	Student* getStudent (std::string lastName) const;
+	void editStudent (std::string lastName) const;
 	
 	//Removes the student located at a particular index in the roster.
 	void removeStudent(std::string lastName);

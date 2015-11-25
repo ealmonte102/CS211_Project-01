@@ -67,12 +67,13 @@ void Roster::addStudent(Student* newStudents[], int numOfStudents) {
 	}
 }
 
-Student* Roster::getStudent (std::string lastName) const {
+void Roster::editStudent (std::string lastName) const {
 	int location = findStudent (lastName);
 	if (location != STUDENT_NOT_FOUND || location != NONE_CHOSEN) {
-		return studentList[location];
+		cout << "=====Editing Student=====\n";
+		cin >> *studentList[location];
+		cout << "=====Editing Finished=====\n";
 	}
-	return nullptr;
 }
 
 //Test various components of the Roster class ([], <<, >>, removeStudent(), sort(), removeAll()).
