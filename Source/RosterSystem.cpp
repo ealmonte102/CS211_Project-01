@@ -115,7 +115,7 @@ void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 		cout << static_cast<char>('a' + i) << ") " << selectOpts[i] << "\n";
 	}
 	string userChoice;
-	cout << "Please choose a valid option(a-d): ";
+	cout << "Please choose an option(a-d): ";
 	getline(cin, userChoice);
 
 	switch (userChoice[0]) {
@@ -145,10 +145,48 @@ void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 			break;
 		case 'D':
 		case 'd':
+			selectedRoster.listAllStudents ( );
 			break;
 		default:
 			cout << "Invalid option selected.\n";
 	}
 }
 
-void RosterSystem::userSelectOpts(Roster& selectedRoster) {}
+void RosterSystem::userSelectOpts(Roster& selectedRoster) {
+	//Subtract 1 due to the fact that "user" does not have access to the last option.
+	for (int i = 0; i < numOfSelectOpts - 1; ++i) {
+		cout << static_cast<char>('a' + i) << ") " << selectOpts[i] << "\n";
+	}
+	string userChoice;
+	cout << "Please choose an option(a-c): ";
+	getline (cin, userChoice);
+
+	switch (userChoice[0]) {
+		case 'A':
+		case 'a':
+		{
+			addToEnrollmentAndRoster (selectedRoster);
+		}
+		break;
+		case 'B':
+		case 'b':
+		{
+			cout << "Please enter the student's last name: ";
+			string lastName;
+			getline (cin, lastName);
+			selectedRoster.removeStudent (lastName);
+		}
+		break;
+		case 'C':
+		case 'c':
+		{
+			cout << "Please enter the student's last name: ";
+			string lastName;
+			getline (cin, lastName);
+			selectedRoster.editStudent (lastName);
+		}
+		break;
+		default:
+			cout << "Invalid option selected.\n";
+	}
+}
