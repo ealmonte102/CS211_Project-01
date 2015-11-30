@@ -9,6 +9,9 @@ public:
 	RosterSystem ( );
 	
 	~RosterSystem ( );
+
+	void showMenuOptions ( );
+
 private:
 	void addToEnrollmentAndRoster (Roster& selectedRoster);
 	
@@ -39,7 +42,10 @@ private:
 	enum loginFlags {
 		NOT_LOGGED, USER, SUPERVISOR
 	} loginStatus;
-	
+
+	static const int numOfMenuOpts = 5;
+	static const std::string menuOpts[numOfMenuOpts];
+
 	static const int numOfSelectOpts = 4;
 	static const std::string selectOpts[numOfSelectOpts];
 	

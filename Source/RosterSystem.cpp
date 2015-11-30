@@ -11,7 +11,21 @@ using std::cout;
 using std::cin;
 using std::string;
 
-const string RosterSystem::selectOpts[numOfSelectOpts] = {"Add new student","Remove a Student","Update a Student","List All Student"};
+int getMenuOptSelection(int start, int end);
+
+const string RosterSystem::menuOpts[numOfMenuOpts] = {
+	"Create a new Roster",
+	"Drop a Roster",
+	"Display Roster Information",
+	"Display All Rosters",
+	"Select a Roster"
+};
+const string RosterSystem::selectOpts[numOfSelectOpts] = {
+	"Add new student",
+	"Remove a Student",
+	"Update a Student",
+	"List All Student"
+};
 
 RosterSystem::RosterSystem( ) : loginStatus(NOT_LOGGED), rListSz(0), rListCap(0), rosterList(nullptr),
                                 eListSz(0), eListCap(0), enrollmentList(nullptr) {}
@@ -26,43 +40,95 @@ RosterSystem::~RosterSystem( ) {
 	}
 	delete[] enrollmentList;
 }
-void RosterSystem::addToEnrollmentList (Student* aStudent) {
+
+void RosterSystem::showMenuOptions( ) {
+	int i = 4;
+	int startOption = 4, endOption = 4;
+	//Display all the menu options available for the supervisor.
+	if (loginStatus == SUPERVISOR) {
+		startOption = 0;
+		for (i = 0; i < numOfMenuOpts - 1; ++i) {
+			cout << i + 1 << ") " << menuOpts[i] << "\n";
+		}
+	}
+
+	cout << i + 1 << ") " << menuOpts[i] << "\n";
+
+	cout << "Please choose an option: ";
+	int choice = getMenuOptSelection(startOption, endOption);
+
+	switch (choice) {
+		case 1:
+			if (loginStatus == SUPERVISOR) {
+				addRoster ( );
+			} else {
+				string courseNumber;
+				getline (cin, courseNumber);
+				selectRoster (courseNumber);
+			}
+			break;
+		case 2:
+			{
+				string courseNumber;
+				getline(cin, courseNumber);
+				removeRoster(courseNumber);
+			}
+			break;
+		case 3:
+			/* intentionally blank*/
+			break;
+		case 4:
+			/* intentionally blank*/
+			break;
+		case 5:
+			{
+				string courseNumber;
+				selectRoster(courseNumber);
+			}
+			break;
+		default:
+			cout << "This point should never be reached.\n";
+			break;
+	}
+}
+
+void RosterSystem::addToEnrollmentList(Student* aStudent) {
 	if (eListSz == eListCap) {
-		growEnrollmentList ( );
+		growEnrollmentList();
 	}
 	enrollmentList[eListSz++] = aStudent;
 }
 
-void RosterSystem::addToEnrollmentAndRoster (Roster& selectedRoster) {
+void RosterSystem::addToEnrollmentAndRoster(Roster& selectedRoster) {
 	if (eListSz == eListCap) {
-		growEnrollmentList ( );
+		growEnrollmentList();
 	}
 	Student* aStudent = new Student;
 	cin >> *aStudent;
 	enrollmentList[eListSz++] = aStudent;
-	selectedRoster.addStudent (aStudent);
+	selectedRoster.addStudent(aStudent);
 }
 
-int RosterSystem::findRoster (std::string courseCode) const {
+int RosterSystem::findRoster(std::string courseCode) const {
 	int foundIndex = NOT_FOUND;
 	for (int i = 0; i < rListSz; ++i) {
-		if (courseCode == rosterList[i]->getCourseCode ( )) {
+		if (courseCode == rosterList[i]->getCourseCode()) {
 			foundIndex = i;
 		}
 	}
 	return foundIndex;
 }
 
-void RosterSystem::addRoster ( ) {
+void RosterSystem::addRoster( ) {
 	if (rListSz == rListCap) {
-		growRosterList ( );
+		growRosterList();
 	}
-	Roster* rosterToAdd = new Roster ( );
+	Roster* rosterToAdd = new Roster();
 	cin >> *rosterToAdd;
 	rosterList[rListSz++] = rosterToAdd;
 }
 
-void RosterSystem::selectRoster (std::string courseNumber) {
+void RosterSystem::selectRoster(std::string courseNumber) {
 	int location = findRoster(courseNumber);
 	if (location == NOT_FOUND) {
 		return;
@@ -78,8 +144,8 @@ void RosterSystem::selectRoster (std::string courseNumber) {
 	} while (getYesOrNo());
 }
 
-void RosterSystem::removeRoster (std::string courseCode) {
-	int location = findRoster (courseCode);
+void RosterSystem::removeRoster(std::string courseCode) {
+	int location = findRoster(courseCode);
 	if (location == NOT_FOUND) {
 		cout << "The course with a code of: " << courseCode << " was not found.\n";
 		return;
@@ -91,7 +157,8 @@ void RosterSystem::removeRoster (std::string courseCode) {
 	rosterList[location] = nullptr;
 	--rListSz;
 }
-void RosterSystem::growEnrollmentList ( ) {
+
+void RosterSystem::growEnrollmentList( ) {
 	int newCap = eListCap * 2 + 1;
 	Student** tempList = new Student*[newCap];
 	for (int i = 0; i < rListSz; ++i) {
@@ -101,7 +168,7 @@ void RosterSystem::growEnrollmentList ( ) {
 	enrollmentList = tempList;
 }
 
-void RosterSystem::growRosterList ( ) {
+void RosterSystem::growRosterList( ) {
 	int newCap = rListCap * 2 + 1;
 	Roster** tempList = new Roster*[newCap];
 	for (int i = 0; i < rListSz; ++i) {
@@ -110,6 +177,7 @@ void RosterSystem::growRosterList ( ) {
 	delete[] rosterList;
 	rosterList = tempList;
 }
+
 void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 	for (int i = 0; i < numOfSelectOpts; ++i) {
 		cout << static_cast<char>('a' + i) << ") " << selectOpts[i] << "\n";
@@ -122,7 +190,7 @@ void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 		case 'A':
 		case 'a':
 			{
-				addToEnrollmentAndRoster (selectedRoster);
+				addToEnrollmentAndRoster(selectedRoster);
 			}
 			break;
 		case 'B':
@@ -145,7 +213,7 @@ void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 			break;
 		case 'D':
 		case 'd':
-			selectedRoster.listAllStudents ( );
+			selectedRoster.listAllStudents();
 			break;
 		default:
 			cout << "Invalid option selected.\n";
@@ -159,34 +227,44 @@ void RosterSystem::userSelectOpts(Roster& selectedRoster) {
 	}
 	string userChoice;
 	cout << "Please choose an option(a-c): ";
-	getline (cin, userChoice);
+	getline(cin, userChoice);
 
 	switch (userChoice[0]) {
 		case 'A':
 		case 'a':
-		{
-			addToEnrollmentAndRoster (selectedRoster);
-		}
-		break;
+			{
+				addToEnrollmentAndRoster(selectedRoster);
+			}
+			break;
 		case 'B':
 		case 'b':
-		{
-			cout << "Please enter the student's last name: ";
-			string lastName;
-			getline (cin, lastName);
-			selectedRoster.removeStudent (lastName);
-		}
-		break;
+			{
+				cout << "Please enter the student's last name: ";
+				string lastName;
+				getline(cin, lastName);
+				selectedRoster.removeStudent(lastName);
+			}
+			break;
 		case 'C':
 		case 'c':
-		{
-			cout << "Please enter the student's last name: ";
-			string lastName;
-			getline (cin, lastName);
-			selectedRoster.editStudent (lastName);
-		}
-		break;
+			{
+				cout << "Please enter the student's last name: ";
+				string lastName;
+				getline(cin, lastName);
+				selectedRoster.editStudent(lastName);
+			}
+			break;
 		default:
 			cout << "Invalid option selected.\n";
 	}
 }
+
+int getMenuOptSelection(int start, int end) {
+	char choiceAsChar;
+	do {
+		cin.get(choiceAsChar);
+	} while (static_cast<int>(choiceAsChar) < start || static_cast<int>(choiceAsChar) > end);
+	int selection = choiceAsChar - '0';
+	return selection;
+}
+
