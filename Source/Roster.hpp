@@ -24,6 +24,8 @@ public:
 
 	int getNumOfCredits( ) const;
 
+	void listAllStudents ( ) const;
+
 	//Allows a student to be passed to the roster and added if the capacity has not been reached.
 	void addStudent(Student* aStudent);
 

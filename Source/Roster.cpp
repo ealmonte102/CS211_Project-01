@@ -128,6 +128,15 @@ int Roster::getNumOfCredits( ) const {
 	return numOfCredits;
 }
 
+void Roster::listAllStudents( ) const {
+	cout << "______________________________\n";
+	for (int i = 0; i < numEnrolled; ++i) {
+		cout << studentList[i]->getLastName ( ) + ", " + studentList[i]->getFirstName ( );
+		cout << ": " << studentList[i]->getId ( ) << "\n";
+	}
+	cout << "______________________________\n";
+}
+
 //Removes student from the current roster.
 void Roster::removeStudent(string lastName) {
 	int location = findStudent(lastName);
