@@ -9,32 +9,47 @@ public:
 	RosterSystem ( );
 	
 	~RosterSystem ( );
+private:
+	void addToEnrollmentAndRoster (Roster& selectedRoster);
+	
+	void addToEnrollmentList (Student* aStudent);
 
 	void addRoster ( );
 
+	//Function which allows supervisor to use the passed Roster. Functions provided listed in selectOps array.
+	void adminSelectOpts (Roster& selectedRoster);
+
+	int findRoster (std::string courseCode) const;
+
+	void growRosterList ( );
+
+	void growEnrollmentList ( );
+	
 	void removeRoster (std::string courseNumber);
 
-	void selectRoster(std::string courseNumber);
+	void selectRoster (std::string courseNumber);
 
-private:
-	void runAdminOptions (Roster& selectedRoster );
-	void runUserOptions (Roster& selectedRoster );
+	void userSelectOpts (Roster& selectedRoster);	
 	
 	RosterSystem (const RosterSystem& rhs) = delete;
 	
 	RosterSystem& operator=(const RosterSystem& rhs) = delete;
 
-	void grow ( );
-
-	int findRoster (std::string courseCode) const;
-
 	enum findFlags { NOT_FOUND = -1 };
 	enum loginFlags {
 		NOT_LOGGED, USER, SUPERVISOR
 	} loginStatus;
-	int size;
-	int capacity;
+	
+	static const int numOfSelectOpts = 4;
+	static const std::string selectOpts[numOfSelectOpts];
+	
+	int rListSz;
+	int rListCap;
 	Roster** rosterList;
+	
+	int eListSz;
+	int eListCap;
+	Student** enrollmentList;
 };
 
 #endif //RosterSystem_HPP

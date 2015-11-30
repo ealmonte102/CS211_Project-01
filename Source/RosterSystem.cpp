@@ -3,77 +3,152 @@
 //
 #include "RosterSystem.hpp"
 #include "Roster.hpp"
-#include <iostream>
+#include "Student.hpp"
 #include "Utilities.hpp"
+#include <iostream>
 
 using std::cout;
 using std::cin;
+using std::string;
 
-RosterSystem::RosterSystem( ) : loginStatus(NOT_LOGGED), size(0),
-                                capacity(0), rosterList(new Roster*[capacity]) {
-	rosterList = nullptr;
-}
+const string RosterSystem::selectOpts[numOfSelectOpts] = {"Add new student","Remove a Student","Update a Student","List All Student"};
+
+RosterSystem::RosterSystem( ) : loginStatus(NOT_LOGGED), rListSz(0), rListCap(0), rosterList(nullptr),
+                                eListSz(0), eListCap(0), enrollmentList(nullptr) {}
 
 RosterSystem::~RosterSystem( ) {
-	for (int i = 0; i < size; ) {
+	for (int i = 0; i < rListSz; ++i) {
 		delete rosterList[i];
 	}
 	delete[] rosterList;
-}
-
-void RosterSystem::grow( ) {
-	int newCap = capacity * 2 + 1;
-	Roster** tempList = new Roster*[newCap];
-	for (int i = 0; i < size; ++i) {
-		tempList[i] = rosterList[i];
+	for (int i = 0; i < eListSz; ++i) {
+		delete enrollmentList[i];
 	}
-	delete[] rosterList;
-	rosterList = tempList;
+	delete[] enrollmentList;
+}
+void RosterSystem::addToEnrollmentList (Student* aStudent) {
+	if (eListSz == eListCap) {
+		growEnrollmentList ( );
+	}
+	enrollmentList[eListSz++] = aStudent;
 }
 
-int RosterSystem::findRoster(std::string courseCode) const{
+void RosterSystem::addToEnrollmentAndRoster (Roster& selectedRoster) {
+	if (eListSz == eListCap) {
+		growEnrollmentList ( );
+	}
+	Student* aStudent = new Student;
+	cin >> *aStudent;
+	enrollmentList[eListSz++] = aStudent;
+	selectedRoster.addStudent (aStudent);
+}
+
+int RosterSystem::findRoster (std::string courseCode) const {
 	int foundIndex = NOT_FOUND;
-	for (int i = 0; i < size; ++i) {
-		if (courseCode == rosterList[i]->getCourseCode()) {
+	for (int i = 0; i < rListSz; ++i) {
+		if (courseCode == rosterList[i]->getCourseCode ( )) {
 			foundIndex = i;
 		}
 	}
 	return foundIndex;
 }
 
-void RosterSystem::addRoster( ) {
-	if(size == capacity) { grow(); }
+void RosterSystem::addRoster ( ) {
+	if (rListSz == rListCap) {
+		growRosterList ( );
+	}
 	Roster* rosterToAdd = new Roster ( );
 	cin >> *rosterToAdd;
-	rosterList[size++] = rosterToAdd;
+	rosterList[rListSz++] = rosterToAdd;
 }
 
-void RosterSystem::removeRoster(std::string courseCode) {
-	int location = findRoster (courseCode);
-	if(location == NOT_FOUND) {
-		cout << "The course with a code of: " << courseCode << " was not found.\n";
-		return;
-	}
-	delete rosterList[size - 1];
-	for (; location < size - 1; ++location) {
-		rosterList[location] = rosterList[location + 1];
-	};
-	rosterList[location] = nullptr;
-	--size; 
-}
-
-void RosterSystem::selectRoster(std::string courseNumber) {
-	int location = findRoster (courseNumber);
-	if(location == NOT_FOUND) {
+void RosterSystem::selectRoster (std::string courseNumber) {
+	int location = findRoster(courseNumber);
+	if (location == NOT_FOUND) {
 		return;
 	}
 	Roster* rosterToEdit = rosterList[location];
 	do {
 		if (loginStatus == SUPERVISOR) {
-			runAdminOptions (*rosterToEdit);
+			adminSelectOpts(*rosterToEdit);
 		} else {
-			runUserOptions (*rosterToEdit);
+			userSelectOpts(*rosterToEdit);
 		}
-		cout << "Would you like to editing the same roster(Y/N)? ";
-	} while (getYesOrNo ( ));
+		cout << "Would you like to continue editing the same roster(Y/N)? ";
+	} while (getYesOrNo());
 }
+
+void RosterSystem::removeRoster (std::string courseCode) {
+	int location = findRoster (courseCode);
+	if (location == NOT_FOUND) {
+		cout << "The course with a code of: " << courseCode << " was not found.\n";
+		return;
+	}
+	delete rosterList[rListSz - 1];
+	for (; location < rListSz - 1; ++location) {
+		rosterList[location] = rosterList[location + 1];
+	};
+	rosterList[location] = nullptr;
+	--rListSz;
+}
+void RosterSystem::growEnrollmentList ( ) {
+	int newCap = eListCap * 2 + 1;
+	Student** tempList = new Student*[newCap];
+	for (int i = 0; i < rListSz; ++i) {
+		tempList[i] = enrollmentList[i];
+	}
+	delete[] enrollmentList;
+	enrollmentList = tempList;
+}
+
+void RosterSystem::growRosterList ( ) {
+	int newCap = rListCap * 2 + 1;
+	Roster** tempList = new Roster*[newCap];
+	for (int i = 0; i < rListSz; ++i) {
+		tempList[i] = rosterList[i];
+	}
+	delete[] rosterList;
+	rosterList = tempList;
+}
+void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
+	for (int i = 0; i < numOfSelectOpts; ++i) {
+		cout << static_cast<char>('a' + i) << ") " << selectOpts[i] << "\n";
+	}
+	string userChoice;
+	cout << "Please choose a valid option(a-d): ";
+	getline(cin, userChoice);
+
+	switch (userChoice[0]) {
+		case 'A':
+		case 'a':
+			{
+				addToEnrollmentAndRoster (selectedRoster);
+			}
+			break;
+		case 'B':
+		case 'b':
+			{
+				cout << "Please enter the student's last name: ";
+				string lastName;
+				getline(cin, lastName);
+				selectedRoster.removeStudent(lastName);
+			}
+			break;
+		case 'C':
+		case 'c':
+			{
+				cout << "Please enter the student's last name: ";
+				string lastName;
+				getline(cin, lastName);
+				selectedRoster.editStudent(lastName);
+			}
+			break;
+		case 'D':
+		case 'd':
+			break;
+		default:
+			cout << "Invalid option selected.\n";
+	}
+}
+
+void RosterSystem::userSelectOpts(Roster& selectedRoster) {}
