@@ -4,6 +4,7 @@
 #include "RosterSystem.hpp"
 #include "Roster.hpp"
 #include <iostream>
+#include "Utilities.hpp"
 
 using std::cout;
 using std::cin;
@@ -59,4 +60,20 @@ void RosterSystem::removeRoster(std::string courseCode) {
 	};
 	rosterList[location] = nullptr;
 	--size; 
+}
+
+void RosterSystem::selectRoster(std::string courseNumber) {
+	int location = findRoster (courseNumber);
+	if(location == NOT_FOUND) {
+		return;
+	}
+	Roster* rosterToEdit = rosterList[location];
+	do {
+		if (loginStatus == SUPERVISOR) {
+			runAdminOptions (*rosterToEdit);
+		} else {
+			runUserOptions (*rosterToEdit);
+		}
+		cout << "Would you like to editing the same roster(Y/N)? ";
+	} while (getYesOrNo ( ));
 }

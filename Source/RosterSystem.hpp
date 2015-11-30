@@ -1,7 +1,6 @@
 ﻿#ifndef RosterSystem_HPP
 #define RosterSystem_HPP
 
-#include <iosfwd>
 #include <string>
 #include "Roster.hpp"
 
@@ -11,13 +10,16 @@ public:
 	
 	~RosterSystem ( );
 
-	friend std::ostream& operator<<(std::ostream& output, const RosterSystem& rhs);
-	
 	void addRoster ( );
 
 	void removeRoster (std::string courseNumber);
 
+	void selectRoster(std::string courseNumber);
+
 private:
+	void runAdminOptions (Roster& selectedRoster );
+	void runUserOptions (Roster& selectedRoster );
+	
 	RosterSystem (const RosterSystem& rhs) = delete;
 	
 	RosterSystem& operator=(const RosterSystem& rhs) = delete;
@@ -33,8 +35,6 @@ private:
 	int size;
 	int capacity;
 	Roster** rosterList;
-
-
 };
 
 #endif //RosterSystem_HPP
