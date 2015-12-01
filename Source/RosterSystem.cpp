@@ -53,8 +53,7 @@ void RosterSystem::showMenuOptions( ) {
 	}
 
 	cout << i + 1 << ") " << menuOpts[i] << "\n";
-
-	cout << "Please choose an option: ";
+	cout << "Please choose an option(q to Quit): ";
 	int choice = getMenuOptSelection(startOption, endOption);
 
 	switch (choice) {
@@ -87,9 +86,10 @@ void RosterSystem::showMenuOptions( ) {
 			}
 			break;
 		default:
-			cout << "This point should never be reached.\n";
-			break;
+			cout << "Exiting to login menu.\n";
+			return;
 	}
+	showMenuOptions ( );
 }
 
 void RosterSystem::addToEnrollmentList(Student* aStudent) {
@@ -263,7 +263,8 @@ int getMenuOptSelection(int start, int end) {
 	char choiceAsChar;
 	do {
 		cin.get(choiceAsChar);
-	} while (static_cast<int>(choiceAsChar) < start || static_cast<int>(choiceAsChar) > end);
+	} while (static_cast<int>(choiceAsChar) < start || static_cast<int>(choiceAsChar) > end && 
+			 choiceAsChar	!= 'q' || choiceAsChar != 'Q' );
 	int selection = choiceAsChar - '0';
 	return selection;
 }
