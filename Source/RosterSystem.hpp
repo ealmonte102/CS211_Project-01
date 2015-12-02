@@ -10,9 +10,12 @@ public:
 	
 	~RosterSystem ( );
 
-	void showMenuOptions ( );
+	void mainMenu ( );
 
 private:
+	void displayAdminMenu ( ) const;
+	void displayUserMenu ( ) const;
+
 	void addToEnrollmentAndRoster (Roster& selectedRoster);
 	
 	void addToEnrollmentList (Student* aStudent);

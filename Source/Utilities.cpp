@@ -2,13 +2,23 @@
 // Created by Evan Almonte on 10/18/2015.
 //
 #include "Utilities.hpp"
-#include <cctype>
+#include <cstdlib>
 #include <iostream>
 #include <string>
 
 using std::cin;
 using std::cout;
 using std::string;
+
+void clearScreen( ) {
+#ifdef _WIN32
+	std::system ("CLS");
+#elif _WIN64
+	std::system ("CLS");
+#else
+	std::system ("CLEAR");
+#endif
+}
 
 bool getYesOrNo( ) {
 	string answer;

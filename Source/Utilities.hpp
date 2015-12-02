@@ -2,6 +2,8 @@
 #define UTILITIES_HPP
 #include <string>
 
+void clearScreen ( );
+
 //Converts a string to it's lowercase equivalent.
 std::string upperConvert(std::string data);
 
