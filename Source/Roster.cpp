@@ -69,10 +69,8 @@ void Roster::addStudent(Student* newStudents[], int numOfStudents) {
 
 void Roster::editStudent (std::string lastName) const {
 	int location = findStudent (lastName);
-	if (location != STUDENT_NOT_FOUND || location != NONE_CHOSEN) {
-		cout << "=====Editing Student=====\n";
+	if (location != STUDENT_NOT_FOUND && location != NONE_CHOSEN) {
 		cin >> *studentList[location];
-		cout << "=====Editing Finished=====\n";
 	}
 }
 
@@ -128,13 +126,27 @@ int Roster::getNumOfCredits( ) const {
 	return numOfCredits;
 }
 
+void Roster::displayInfo( ) const {
+	cout << "==============================\n";
+	cout << "Course: " << courseName <<"\n";
+	cout << "Course Code: " << courseCode << "\n";
+	cout << "Instructor: " << instructor << "\n";
+	cout << "Credits: " << numOfCredits << "\n";
+	cout << "Students Enrolled: " << numEnrolled << "/" << capacity << "\n";
+	cout << "==============================\n";
+}
+
 void Roster::listAllStudents( ) const {
-	cout << "______________________________\n";
-	for (int i = 0; i < numEnrolled; ++i) {
-		cout << studentList[i]->getLastName ( ) + ", " + studentList[i]->getFirstName ( );
-		cout << ": " << studentList[i]->getId ( ) << "\n";
+	if (numEnrolled != 0) {
+		cout << "______________________________\n";
+		for (int i = 0; i < numEnrolled; ++i) {
+			cout << studentList[i]->getLastName ( ) + ", " + studentList[i]->getFirstName ( );
+			cout << ": " << studentList[i]->getId ( ) << "\n";
+		}
+		cout << "______________________________\n";
+	} else {
+		cout << "The current roster is empty.\n";
 	}
-	cout << "______________________________\n";
 }
 
 //Removes student from the current roster.

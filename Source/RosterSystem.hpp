@@ -10,11 +10,13 @@ public:
 	
 	~RosterSystem ( );
 
-	void mainMenu ( );
+	void loginMenu ( );
 
+	void mainMenu ( );
 private:
-	void displayAdminMenu ( ) const;
-	void displayUserMenu ( ) const;
+	static void displayAdminMenu ( );
+
+	static void displayUserMenu ( );
 
 	void addToEnrollmentAndRoster (Roster& selectedRoster);
 	
@@ -24,6 +26,10 @@ private:
 
 	//Function which allows supervisor to use the passed Roster. Functions provided listed in selectOps array.
 	void adminSelectOpts (Roster& selectedRoster);
+
+	void displayRoster (std::string courseNumber) const;
+
+	void displayAllRosters () const;
 
 	int findRoster (std::string courseCode) const;
 
