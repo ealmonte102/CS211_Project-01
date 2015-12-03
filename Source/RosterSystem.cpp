@@ -24,10 +24,10 @@ const string RosterSystem::menuOpts[numOfMenuOpts] = {
 	"Select a Roster"
 };
 const string RosterSystem::selectOpts[numOfSelectOpts] = {
-	"Add new student",
+	"Add a New Student",
 	"Remove a Student",
 	"Update a Student",
-	"List All Student"
+	"List All Students"
 };
 
 RosterSystem::RosterSystem( ) : loginStatus(NOT_LOGGED), rListSz(0), rListCap(0), rosterList(nullptr),

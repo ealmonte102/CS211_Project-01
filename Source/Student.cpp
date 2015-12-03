@@ -26,7 +26,7 @@ const double Student::MAX_GPA = 4.0;
 
 // Constructors
 Student::Student( ) : lastName(""), firstName(""), id(""), 
-gpa(-1.0), credits(-1), standing("") { }
+					standing(""), credits(-1), gpa(-1.0) { }
 
 Student::Student (string first, string last, std::string id, int creds, double gpa, Date dob, Date matric) 
 	: lastName(last), firstName(first), id(id), credits(creds),

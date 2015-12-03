@@ -15,9 +15,7 @@ public:
 
 	Student (std::string first, std::string last, std::string id, int creds, double gpa, Date dob, Date matric);
 
-	~Student ( );
 	//Accessors
-
 	int getCredits ( ) const;
 
 	const Date& getDob ( ) const;
