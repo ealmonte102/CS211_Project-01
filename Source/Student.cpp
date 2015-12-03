@@ -1,7 +1,6 @@
 // Student.cpp
 // Created by Evan Almonte on 10/18/2015.
 //
-#include "Stack.hpp"
 #include "Student.hpp"
 #include "Utilities.hpp"
 #include <iostream>
@@ -24,23 +23,14 @@ string idToInt(int num) {
 
 const double Student::MIN_GPA = 0.0;
 const double Student::MAX_GPA = 4.0;
-Stack Student::unusedID(0);
-
-void Student::generateNextID( ) {
-	if (unusedID.getSize() > 1) {
-		unusedID.pop();
-	} else {
-		unusedID.push(unusedID.pop() + 1);
-	}
-}
 
 // Constructors
-Student::Student( ) : lastName(""), firstName(""), idAsNum(-1),
-                      id(""), gpa(-1.0), credits(-1), standing("") { }
+Student::Student( ) : lastName(""), firstName(""), id(""), 
+gpa(-1.0), credits(-1), standing("") { }
 
-Student::Student(std::string last, std::string first, double gpa, int credits, Date dob, Date matric)
-	: lastName(last), firstName(first), idAsNum(unusedID.peek()), id(idToInt(idAsNum)), gpa(gpa),
-	  credits(credits), dob(dob), matriculation(matric) {
+Student::Student (string first, string last, std::string id, int creds, double gpa, Date dob, Date matric) 
+	: lastName(last), firstName(first), id(id), credits(creds),
+	  gpa(gpa), dob(dob), matriculation(matric) {
 	if (credits < 0) {
 		this->credits = 0;
 	}
@@ -48,11 +38,6 @@ Student::Student(std::string last, std::string first, double gpa, int credits, D
 		this->gpa = 0;
 	}
 	setStanding();
-	generateNextID();
-}
-
-Student::~Student( ) {
-	unusedID.push(idAsNum);
 }
 
 // Accessors
@@ -202,10 +187,10 @@ istream& operator>>(istream& input, Student& currentStudent) {
 		input >> currentStudent.lastName;
 		currentStudent.lastName = upperConvert(currentStudent.lastName);
 	}
-	if (currentStudent.id == "") {
-		currentStudent.idAsNum = Student::unusedID.peek();
-		currentStudent.id = idToInt(currentStudent.idAsNum);
-		Student::generateNextID();
+	cout << "Change Student ID(Y/N)? ";
+	if (getYesOrNo ( )) {
+		cout << "New ID: ";
+		input >> currentStudent.id;
 	}
 	cout << "Change credits earned(Y/N)? ";
 	if (getYesOrNo()) {

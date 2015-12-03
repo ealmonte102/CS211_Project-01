@@ -2,7 +2,6 @@
 #define STUDENT_HPP
 
 #include "Date.h"
-#include "Stack.hpp"
 #include <string>
 
 class Student {
@@ -14,7 +13,7 @@ public:
 	*/
 	Student ( );
 
-	Student (std::string last, std::string first, double gradeAvg, int creds, Date birthday, Date matriculationDate);
+	Student (std::string first, std::string last, std::string id, int creds, double gpa, Date dob, Date matric);
 
 	~Student ( );
 	//Accessors
@@ -87,23 +86,18 @@ public:
 	bool operator<=(const Student& otherStudent) const;
 
 private:
-	static void generateNextID ( );
-
 	//Sets the standing based on the student's acquired credits.
 	void setStanding ( );
 
 	static const double MAX_GPA;
 	static const double MIN_GPA;
 public:
-	static Stack unusedID;
-
 	std::string lastName;
 	std::string firstName;
-	int idAsNum;
 	std::string id;
-	double gpa;
-	int credits;
 	std::string standing;
+	int credits;
+	double gpa;
 	Date dob;
 	Date matriculation;
 };
