@@ -122,6 +122,10 @@ string Roster::getInstructorName( ) const {
 	return instructor;
 }
 
+int Roster::getNumEnrolled( ) const {
+	return numEnrolled;
+}
+
 int Roster::getNumOfCredits( ) const {
 	return numOfCredits;
 }

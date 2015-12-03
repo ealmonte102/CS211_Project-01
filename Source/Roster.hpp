@@ -22,6 +22,8 @@ public:
 
 	std::string getInstructorName( ) const;
 
+	int getNumEnrolled ( ) const;
+
 	int getNumOfCredits( ) const;
 
 	void displayInfo ( ) const;

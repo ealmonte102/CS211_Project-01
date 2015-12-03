@@ -3,6 +3,7 @@
 //
 #include "RosterSystem.hpp"
 #include "Roster.hpp"
+#include "RSFileManager.hpp"
 #include "Student.hpp"
 #include "Utilities.hpp"
 #include <iostream>
@@ -56,12 +57,14 @@ void RosterSystem::loginMenu( ) {
 	char choice = RosterSystemUtils::getLoginOptSelection ( );
 	switch(choice) {
 		case 'A':
-			/*Intentionally left blank*/
-		case 'a':
-			break;
+		case 'a': {
+			RosterSystem::RSFileManager userDatabase ("Database.txt", false);
+			loginStatus = userDatabase.attemptLogin ( );
+		}
 		case 'B':
 		case 'b':
 			mainMenu ( );
+			loginMenu ( );
 			break;
 		case 'C':
 		case 'c':
@@ -351,23 +354,24 @@ void RosterSystem::userSelectOpts(Roster& selectedRoster) {
 	}
 }
 
-namespace RosterSystemUtils{
+namespace RosterSystemUtils {
 	int getMenuOptSelection (int start, int end) {
-	string choice;
-	do {
-		getline (cin, choice);
-	} while (choice[0] - '0' < start || choice[0] - '0' > end &&
-		choice != "q" && choice != "Q");
-	int selection = choice[0] - '0';
-	return selection;
-}
+		string choice;
+		do {
+			getline (cin, choice);
+		} while (choice[0] - '0' < start || choice[0] - '0' > end &&
+				 choice != "q" && choice != "Q");
+		int selection = choice[0] - '0';
+		return selection;
+	}
 
 	char getLoginOptSelection ( ) {
-	string choice;
-	do {
-		getline (cin, choice);
-	} while (choice != "A" && choice != "B" && choice != "C" &&
-			 choice != "a" && choice != "b" && choice != "c");
-	return choice[0];
-}
+		string choice;
+		do {
+			getline (cin, choice);
+		} while (choice != "A" && choice != "B" && choice != "C" &&
+				 choice != "a" && choice != "b" && choice != "c");
+		return choice[0];
+
+	}
 }
