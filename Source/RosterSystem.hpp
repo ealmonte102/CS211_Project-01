@@ -12,9 +12,9 @@ public:
 
 	void loginMenu ( );
 
+private:
 	void mainMenu ( );
 
-private:
 	static void displayAdminMenu ( );
 
 	static void displayUserMenu ( );
@@ -49,7 +49,7 @@ private:
 	RosterSystem& operator=(const RosterSystem& rhs) = delete;
 	
 	class RSFileManager;
-	enum findFlags { NOT_FOUND = -1 };
+	enum findFlags { NOT_FOUND = -2, EMPTY_LIST };
 	enum loginFlags {
 		NOT_LOGGED, USER, SUPERVISOR
 	} loginStatus;

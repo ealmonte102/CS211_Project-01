@@ -131,13 +131,13 @@ int Roster::getNumOfCredits( ) const {
 }
 
 void Roster::displayInfo( ) const {
-	cout << "==============================\n";
+	cout << "/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\\n";
 	cout << "Course: " << courseName <<"\n";
 	cout << "Course Code: " << courseCode << "\n";
 	cout << "Instructor: " << instructor << "\n";
 	cout << "Credits: " << numOfCredits << "\n";
 	cout << "Students Enrolled: " << numEnrolled << "/" << capacity << "\n";
-	cout << "==============================\n";
+	cout << "\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\n";
 }
 
 void Roster::listAllStudents( ) const {

@@ -170,11 +170,18 @@ void RosterSystem::addToEnrollmentAndRoster(Roster& selectedRoster) {
 }
 
 int RosterSystem::findRoster(std::string courseCode) const {
+	if (rListSz == 0) {
+		cout << "There are no rosters in the system.\n";
+		return EMPTY_LIST;
+	}
 	int foundIndex = NOT_FOUND;
 	for (int i = 0; i < rListSz; ++i) {
 		if (courseCode == rosterList[i]->getCourseCode()) {
 			foundIndex = i;
 		}
+	}
+	if(foundIndex == NOT_FOUND) {
+		cout << "No roster with a course number of: " << courseCode << " was found.\n";
 	}
 	return foundIndex;
 }
@@ -184,7 +191,7 @@ void RosterSystem::addRoster( ) {
 	if (rListSz == rListCap) {
 		growRosterList();
 	}
-	Roster* rosterToAdd = new Roster();
+	Roster* rosterToAdd = new Roster;
 	cout << "******************************\n";
 	cout << "      New Roster Created      \n";
 	cout << "******************************\n";
@@ -193,9 +200,8 @@ void RosterSystem::addRoster( ) {
 }
 
 void RosterSystem::selectRoster(std::string courseNumber) {
-	int location = findRoster(courseNumber);
-	if (location == NOT_FOUND) {
-		cout << "No roster with a course number of: " << courseNumber << " was found.\n";
+	int location = findRoster (courseNumber);
+	if (location == NOT_FOUND || location == EMPTY_LIST) {
 		return;
 	}
 	Roster* rosterToEdit = rosterList[location];
@@ -211,15 +217,28 @@ void RosterSystem::selectRoster(std::string courseNumber) {
 
 void RosterSystem::removeRoster(std::string courseCode) {
 	int location = findRoster(courseCode);
-	if (location == NOT_FOUND) {
-		cout << "The course with a code of: " << courseCode << " was not found.\n";
+	if (location == NOT_FOUND || location == EMPTY_LIST) {
 		return;
 	}
-	delete rosterList[rListSz - 1];
+	clearScreen ( );
+	//		Displays a title as:
+	//*******************************
+	//  CourseName Has Been Deleted 
+	//*******************************
+	int lengthOfName = rosterList[location]->getCourseName ( ).length ( );
+	string numOfAsterixs = "**";
+	for (int i = 0; i < lengthOfName; ++i) {
+		numOfAsterixs += "*";
+	}
+	cout << numOfAsterixs << "*******************\n";
+	cout << "  " << rosterList[location]->getCourseName() << " Has Been Deleted  \n";
+	cout << numOfAsterixs << "*******************\n";
+	//Shifts all rosters over to the left.
+	delete rosterList[location];
 	for (; location < rListSz - 1; ++location) {
 		rosterList[location] = rosterList[location + 1];
 	};
-	rosterList[location] = nullptr;
+	rosterList[rListSz - 1] = nullptr;
 	--rListSz;
 }
 
@@ -293,9 +312,9 @@ void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 }
 
 void RosterSystem::displayRoster(std::string courseNumber) const {
+	clearScreen ( );
 	int location = findRoster(courseNumber);
-	if (location == NOT_FOUND) {
-		cout << "No roster with a course number of: " << courseNumber << " was found.\n";
+	if (location == NOT_FOUND || location == EMPTY_LIST) {
 		return;
 	}
 	Roster* rosterToDisplay = rosterList[location];
@@ -303,8 +322,17 @@ void RosterSystem::displayRoster(std::string courseNumber) const {
 }
 
 void RosterSystem::displayAllRosters( ) const {
+	clearScreen ( );
+	if(rListSz == 0) {
+		cout << "There are no rosters in the system.\n";
+		return;
+	}
+	cout << "******************************\n";
+	cout << "      Display All Rosters     \n";
+	cout << "******************************\n";
 	for (int i = 0; i < rListSz; ++i) {
 		rosterList[i]->displayInfo();
+		cout << "\n";
 	}
 }
 
