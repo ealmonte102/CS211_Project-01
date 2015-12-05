@@ -58,8 +58,8 @@ void RosterSystem::loginMenu( ) {
 	switch(choice) {
 		case 'A':
 		case 'a': {
-			RosterSystem::RSFileManager userDatabase ("Database.txt", false);
-			loginStatus = userDatabase.attemptLogin ( );
+			RSFileManager database ("Database.txt", false);
+			loginStatus = database.attemptLogin ( );
 		}
 		case 'B':
 		case 'b':
@@ -67,7 +67,10 @@ void RosterSystem::loginMenu( ) {
 			loginMenu ( );
 			break;
 		case 'C':
-		case 'c':
+		case 'c': {
+			RSFileManager writeRosters ("RosterFile.txt", true);
+			writeRosters.exportRosters (rosterList, rListSz);
+		}
 			break;
 		default:
 			cout << "Invalid choice please try again.\n";
@@ -160,13 +163,13 @@ void RosterSystem::addToEnrollmentAndRoster(Roster& selectedRoster) {
 	if (eListSz == eListCap) {
 		growEnrollmentList();
 	}
-	Student* aStudent = new Student;
+	Student* studentToAdd = new Student();
 	cout << "******************************\n";
 	cout << "      New Student Added       \n";
 	cout << "******************************\n";
-	cin >> *aStudent;
-	enrollmentList[eListSz++] = aStudent;
-	selectedRoster.addStudent(aStudent);
+	cin >> *studentToAdd;
+	enrollmentList[eListSz++] = studentToAdd;
+	selectedRoster.addStudent(studentToAdd);
 }
 
 int RosterSystem::findRoster(std::string courseCode) const {
@@ -248,7 +251,11 @@ void RosterSystem::growEnrollmentList( ) {
 	for (int i = 0; i < eListSz; ++i) {
 		tempList[i] = enrollmentList[i];
 	}
+	for (int i = eListSz; i < eListCap; i++) {
+		enrollmentList[i] = nullptr;
+	}
 	delete[] enrollmentList;
+	eListCap = newCap;
 	enrollmentList = tempList;
 }
 
@@ -257,6 +264,9 @@ void RosterSystem::growRosterList( ) {
 	Roster** tempList = new Roster*[newCap];
 	for (int i = 0; i < rListSz; ++i) {
 		tempList[i] = rosterList[i];
+	}
+	for (int i = rListSz; i < rListCap; i++) {
+		rosterList[i] = nullptr;
 	}
 	delete[] rosterList;
 	rListCap = newCap;
