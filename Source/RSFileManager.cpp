@@ -91,11 +91,99 @@ void RosterSystem::RSFileManager::exportRosters(const Roster* const* const roste
 
 namespace RSFileManagerUtils {
 	void parseRosterLine (string aRosterLine, Roster& aRoster) {			
-		/*Intentionally Left Empty*/
+		string courseName, courseCode, profName;
+		int creds;
+		int posOfLine, posOfLine2;
+
+		posOfLine = aRosterLine.find ('|');
+		courseName = trim (aRosterLine.substr (0, posOfLine - 1));
+
+		posOfLine2 = aRosterLine.find ('|', posOfLine + 1);
+		courseCode = trim (aRosterLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1));
+
+		posOfLine = posOfLine2;
+
+		posOfLine2 = aRosterLine.find ('|', posOfLine + 1);
+		creds = stoi (trim (aRosterLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+
+		posOfLine = posOfLine2;
+
+		profName = trim (aRosterLine.substr (posOfLine + 1, aRosterLine.length ( ) - posOfLine - 1));
+		
+		aRoster.setCourseName (courseName);
+		aRoster.setCourseCode (courseCode);
+		aRoster.setInstructorName (profName);
+		aRoster.setCredits (creds);
 	}
 
 	void parseStudentLine (string aStudentLine, Student& aStudent) {
-		/*Intentionally Left Empty*/
+		string first, last;
+		int credits, id;
+		double gpa;
+		Date dob, mat;
+		int month, day, year;
+		unsigned long int posOfLine, posOfLine2; //4,294,967,295 numbers
+
+		posOfLine = aStudentLine.find ('|');
+		first = trim (aStudentLine.substr (0, posOfLine - 1));
+
+		posOfLine2 = aStudentLine.find ('|', posOfLine + 1);
+		last = trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1));
+
+		posOfLine = posOfLine2;
+
+		posOfLine2 = aStudentLine.find ('|', posOfLine + 1);
+		id = stoi (trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+
+		posOfLine = aStudentLine.find ('|', posOfLine2 + 1);
+		posOfLine2 = aStudentLine.find ('|', posOfLine + 1);
+
+		credits = stoi (trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+		posOfLine = posOfLine2;
+
+		posOfLine2 = aStudentLine.find ('|', posOfLine + 1);
+		gpa = stod (trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+
+		posOfLine = posOfLine2;
+
+		posOfLine2 = aStudentLine.find ('/', posOfLine + 1);
+		month = stoi (trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+
+		posOfLine = posOfLine2;
+
+		posOfLine2 = aStudentLine.find ('/', posOfLine + 1);
+		day = stoi (trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+
+		posOfLine = posOfLine2;
+
+		posOfLine2 = aStudentLine.find ('|', posOfLine + 1);
+		year = stoi (trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+
+		dob = Date (month, day, year);
+
+		posOfLine = posOfLine2;
+
+		posOfLine2 = aStudentLine.find ('/', posOfLine + 1);
+		month = stoi (trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+
+		posOfLine = posOfLine2;
+
+		posOfLine2 = aStudentLine.find ('/', posOfLine + 1);
+		day = stoi (trim (aStudentLine.substr (posOfLine + 1, posOfLine2 - posOfLine - 1)));
+
+		posOfLine = posOfLine2;
+
+		year = stoi (trim (aStudentLine.substr (posOfLine + 1, aStudentLine.length ( ) - posOfLine - 1)));
+
+		mat = Date (month, day, year);
+
+		aStudent.setFirstName (first);
+		aStudent.setLastName (last);
+		aStudent.setId (id);
+		aStudent.setCredits (credits);
+		aStudent.setGpa (gpa);
+		aStudent.setDob (mat);
+		aStudent.setMatric (dob);
 	}
 	
 	string trim (string aString) {

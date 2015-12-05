@@ -45,6 +45,11 @@ public:
 
 	void removeAll( );
 
+	void setCourseName (std::string cN);
+	void setCourseCode (std::string cC);
+	void setInstructorName (std::string iN);
+	void setCredits (int creds);
+
 	void sortUp ( ) const;
 
 	void sortDown ( ) const;
@@ -71,7 +76,7 @@ private:
 	std::string courseCode;
 	int numEnrolled;
 	std::string instructor;
-	int numOfCredits;
+	int credits;
 	int capacity;
 	Student** studentList;
 

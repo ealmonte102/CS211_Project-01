@@ -102,6 +102,10 @@ void Student::setGpa(double gradeAvg) {
 	}
 }
 
+void Student::setId(int id) {
+	this->id = id;
+}
+
 void Student::setLastName(std::string last) {
 	lastName = last;
 }

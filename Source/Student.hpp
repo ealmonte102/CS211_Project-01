@@ -47,6 +47,8 @@ public:
 
 	void setGpa (double gradeAvg);
 
+	void setId (int id);
+
 	void setLastName (std::string last);
 
 	void setMatric (const Date& matric);

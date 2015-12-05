@@ -20,7 +20,7 @@ namespace RosterUtils {
 
 //Constructors
 Roster::Roster( ) : courseName(""), courseCode(""), numEnrolled(0), instructor(""),
-                    numOfCredits(0), capacity(5), studentList(new Student*[capacity]) {
+                    credits(0), capacity(5), studentList(new Student*[capacity]) {
 	for (int i = 0; i < capacity; ++i) {
 		studentList[i] = nullptr;
 	}
@@ -28,11 +28,11 @@ Roster::Roster( ) : courseName(""), courseCode(""), numEnrolled(0), instructor("
 
 Roster::Roster(std::string course, std::string courseNumber, std::string instructor, int credits, int maxCapacity) :
 	courseName(course), courseCode(courseNumber), numEnrolled(0),
-	instructor(instructor), numOfCredits(credits), capacity(maxCapacity) {
-	if (numOfCredits <= 0 || numOfCredits > 4) {
-		cout << "Invalid number of credits given: " << numOfCredits << "\n";
+	instructor(instructor), credits(credits), capacity(maxCapacity) {
+	if (credits <= 0 || credits > 4) {
+		cout << "Invalid number of credits given: " << credits << "\n";
 		cout << "Please try again: ";
-		numOfCredits = getValidInt();
+		credits = getValidInt();
 	}
 	if (capacity < 0) {
 		capacity = 0;
@@ -45,7 +45,7 @@ Roster::Roster(std::string course, std::string courseNumber, std::string instruc
 
 Roster::Roster(const Roster& rhs) :
 	courseName(rhs.courseName), courseCode(rhs.courseCode), instructor(rhs.instructor),
-	numOfCredits(rhs.numOfCredits), capacity(rhs.capacity), studentList(new Student*[capacity]) {
+	credits(rhs.credits), capacity(rhs.capacity), studentList(new Student*[capacity]) {
 	for (numEnrolled = 0; numEnrolled < rhs.numEnrolled; ++numEnrolled) {
 		studentList[numEnrolled] = rhs.studentList[numEnrolled];
 	}
@@ -117,6 +117,22 @@ void Roster::removeAll( ) {
 	}
 }
 
+void Roster::setCourseName(std::string cN) {
+	courseName = cN;
+}
+
+void Roster::setCourseCode(std::string cC) {
+	courseCode = cC;
+}
+
+void Roster::setInstructorName(std::string iN) {
+	instructor = iN;
+}
+
+void Roster::setCredits(int creds) {
+	credits = creds;
+}
+
 string Roster::getCourseCode( ) const {
 	return courseCode;
 }
@@ -134,7 +150,7 @@ int Roster::getNumEnrolled( ) const {
 }
 
 int Roster::getNumOfCredits( ) const {
-	return numOfCredits;
+	return credits;
 }
 
 void Roster::displayInfo( ) const {
@@ -142,7 +158,7 @@ void Roster::displayInfo( ) const {
 	cout << "Course: " << courseName << "\n";
 	cout << "Course Code: " << courseCode << "\n";
 	cout << "Instructor: " << instructor << "\n";
-	cout << "Credits: " << numOfCredits << "\n";
+	cout << "Credits: " << credits << "\n";
 	cout << "Students Enrolled: " << numEnrolled << "/" << capacity << "\n";
 	RosterUtils::printSpikeDesignRev (courseName.length() + 9);
 }
@@ -248,7 +264,7 @@ ostream& operator<<(ostream& output, const Roster& currentRoster) {
 	output << "Course: " << currentRoster.courseName << "\n";
 	output << "Course Code: " << currentRoster.courseCode << "\n";
 	output << "Instructor: " << currentRoster.instructor << "\n";
-	output << "Credits: " << currentRoster.numOfCredits << "\n";
+	output << "Credits: " << currentRoster.credits << "\n";
 	output << "Students Enrolled: " << currentRoster.numEnrolled << "/" << currentRoster.capacity << "\n";
 	output << "______________________________\n";
 	for (int i = 0; i < currentRoster.numEnrolled; ++i) {
@@ -279,8 +295,8 @@ std::istream& operator>>(std::istream& input, Roster& currentRoster) {
 	if (getYesOrNo()) {
 		cout << "Please enter the credits awarded upon completion: ";
 		do {
-			currentRoster.numOfCredits = getValidInt();
-		} while (currentRoster.numOfCredits < 1 || currentRoster.numOfCredits > 4);
+			currentRoster.credits = getValidInt();
+		} while (currentRoster.credits < 1 || currentRoster.credits > 4);
 	}
 	return input;
 }
@@ -301,7 +317,7 @@ Roster& Roster::operator=(const Roster& rhs) {
 		courseName = rhs.courseName;
 		courseCode = rhs.courseCode;
 		instructor = rhs.instructor;
-		numOfCredits = rhs.numOfCredits;
+		credits = rhs.credits;
 		capacity = rhs.capacity;
 		studentList = new Student*[capacity];
 		for (numEnrolled = 0; numEnrolled < rhs.numEnrolled; ++numEnrolled) {
