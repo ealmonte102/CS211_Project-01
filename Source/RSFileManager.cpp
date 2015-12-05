@@ -11,6 +11,12 @@ using std::string;
 using std::cout;
 using std::cin;
 
+namespace RSFileManagerUtils{
+	void parseRosterLine (string aRosterLine, Roster& aRoster);
+	void parseStudentLine (string aStudentLine, Student& aStudent);
+	string trim (string aString);
+}
+
 RosterSystem::RSFileManager::RSFileManager(std::string fileName, bool useAsOutput) : fileName(fileName) {
 	if (useAsOutput) {
 		ioFile.open(fileName.c_str(), std::ios::out);
@@ -80,5 +86,28 @@ void RosterSystem::RSFileManager::exportRosters(const Roster* const* const roste
 			ioFile << "end_roster|";
 			if (i != size - 1) { ioFile << "\n"; }
 		}
+	}
+}
+
+namespace RSFileManagerUtils {
+	void parseRosterLine (string aRosterLine, Roster& aRoster) {			
+		/*Intentionally Left Empty*/
+	}
+
+	void parseStudentLine (string aStudentLine, Student& aStudent) {
+		/*Intentionally Left Empty*/
+	}
+	
+	string trim (string aString) {
+		int firstNonWhite = aString.find_first_not_of (" ");
+		int lastNonWhite;
+		if (firstNonWhite != -1) {
+			aString.erase (0, firstNonWhite);
+		}
+		lastNonWhite = aString.find_last_not_of (" ");
+		if (lastNonWhite != -1) {
+			aString.erase (lastNonWhite + 1);
+		}
+		return aString;
 	}
 }
