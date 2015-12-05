@@ -13,6 +13,11 @@ using std::istream;
 using std::ostream;
 using std::string;
 
+namespace RosterUtils {
+	void printSpikeDesign (int length);
+	void printSpikeDesignRev (int length);
+}
+
 //Constructors
 Roster::Roster( ) : courseName(""), courseCode(""), numEnrolled(0), instructor(""),
                     numOfCredits(0), capacity(5), studentList(new Student*[capacity]) {
@@ -29,7 +34,9 @@ Roster::Roster(std::string course, std::string courseNumber, std::string instruc
 		cout << "Please try again: ";
 		numOfCredits = getValidInt();
 	}
-	if (capacity < 0) { capacity = 0; }
+	if (capacity < 0) {
+		capacity = 0;
+	}
 	studentList = new Student*[capacity];
 	for (int i = 0; i < capacity; ++i) {
 		studentList[i] = nullptr;
@@ -67,15 +74,15 @@ void Roster::addStudent(Student* newStudents[], int numOfStudents) {
 	}
 }
 
-void Roster::editStudent (std::string lastName) const {
-	int location = findStudent (lastName);
+void Roster::editStudent(std::string lastName) const {
+	int location = findStudent(lastName);
 	if (location != STUDENT_NOT_FOUND && location != NONE_CHOSEN) {
 		cin >> *studentList[location];
 	}
 }
 
 //Test various components of the Roster class ([], <<, >>, removeStudent(), sort(), removeAll()).
-void Roster::driver ( ) {
+void Roster::driver( ) {
 	cout << "=====Testing >> operator=====\n";
 	cin >> *this;
 
@@ -90,16 +97,16 @@ void Roster::driver ( ) {
 	cout << "=====Testing removeStudent=====\n";
 	cout << "Please enter a last name: ";
 	string inputLastName;
-	getline (cin, inputLastName);
-	removeStudent (inputLastName);
+	getline(cin, inputLastName);
+	removeStudent(inputLastName);
 	cout << "After removeStudent(" << inputLastName << "):\n" << *this << "\n";
 
 	cout << "=====Testing sort()=====\n";
-	sortUp ( );
+	sortUp();
 	cout << *this << "\n";
 
 	cout << "=====Testing removeAll()=====\n";
-	removeAll ( );
+	removeAll();
 	cout << *this << "\n";
 }
 
@@ -110,7 +117,7 @@ void Roster::removeAll( ) {
 	}
 }
 
-string Roster::getCourseCode ( ) const {
+string Roster::getCourseCode( ) const {
 	return courseCode;
 }
 
@@ -131,21 +138,21 @@ int Roster::getNumOfCredits( ) const {
 }
 
 void Roster::displayInfo( ) const {
-	cout << "/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\\n";
-	cout << "Course: " << courseName <<"\n";
+	RosterUtils::printSpikeDesign (courseName.length() + 9);
+	cout << "Course: " << courseName << "\n";
 	cout << "Course Code: " << courseCode << "\n";
 	cout << "Instructor: " << instructor << "\n";
 	cout << "Credits: " << numOfCredits << "\n";
 	cout << "Students Enrolled: " << numEnrolled << "/" << capacity << "\n";
-	cout << "\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\n";
+	RosterUtils::printSpikeDesignRev (courseName.length() + 9);
 }
 
 void Roster::listAllStudents( ) const {
 	if (numEnrolled != 0) {
 		cout << "______________________________\n";
 		for (int i = 0; i < numEnrolled; ++i) {
-			cout << studentList[i]->getLastName ( ) + ", " + studentList[i]->getFirstName ( );
-			cout << ": " << studentList[i]->getId ( ) << "\n";
+			cout << studentList[i]->getLastName() + ", " + studentList[i]->getFirstName();
+			cout << ": " << studentList[i]->getId() << "\n";
 		}
 		cout << "______________________________\n";
 	} else {
@@ -164,6 +171,7 @@ void Roster::removeStudent(string lastName) {
 		--numEnrolled;
 	}
 }
+
 //If found, returns the index of a student in studentList otherwise returns STUDENT_NOT_FOUND
 //if none are found, or NONE_CHOSEN if user wishes to quit without choosing a student.
 int Roster::findStudent(string lastName) const {
@@ -301,4 +309,21 @@ Roster& Roster::operator=(const Roster& rhs) {
 		}
 	}
 	return *this;
+}
+
+
+namespace RosterUtils {
+	void printSpikeDesign(int length) {
+		for (int i = 0; i < length; ++i) {
+			i % 2 == 0 ? cout << "/" : cout << "\\";
+		}
+		cout << "\n";
+	}
+
+	void printSpikeDesignRev(int length) {
+		for (int i = 0; i < length; ++i) {
+			i % 2 == 0 ? cout << "\\" : cout << "/";
+		}
+		cout << "\n";
+	}
 }

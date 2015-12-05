@@ -15,6 +15,7 @@ using std::string;
 namespace RosterSystemUtils {
 	int getMenuOptSelection (int start, int end);
 	char getLoginOptSelection ( );
+	string getStarDesign (int length);
 }
 const string RosterSystem::menuOpts[numOfMenuOpts] = {
 	"Create a new Roster",
@@ -224,18 +225,14 @@ void RosterSystem::removeRoster(std::string courseCode) {
 		return;
 	}
 	clearScreen ( );
+	string titleBarStars = RosterSystemUtils::getStarDesign (23 + rosterList[location]->getCourseName ( ).length ( ));
 	//		Displays a title as:
 	//*******************************
 	//  CourseName Has Been Deleted 
 	//*******************************
-	int lengthOfName = rosterList[location]->getCourseName ( ).length ( );
-	string numOfAsterixs = "**";
-	for (int i = 0; i < lengthOfName; ++i) {
-		numOfAsterixs += "*";
-	}
-	cout << numOfAsterixs << "*******************\n";
-	cout << "  " << rosterList[location]->getCourseName() << " Has Been Deleted  \n";
-	cout << numOfAsterixs << "*******************\n";
+	cout << titleBarStars << "\n";
+	cout << "  " << rosterList[location]->getCourseName() << " Has Been Deleted\n";
+	cout << titleBarStars << "\n";
 	//Shifts all rosters over to the left.
 	delete rosterList[location];
 	for (; location < rListSz - 1; ++location) {
@@ -411,5 +408,13 @@ namespace RosterSystemUtils {
 				 choice != "a" && choice != "b" && choice != "c");
 		return choice[0];
 
+	}
+
+	string getStarDesign (int length) {
+		string starDesign = "";
+		for (int i = 0; i < length; ++i) {
+			starDesign += "*";
+		}
+		return starDesign;
 	}
 }
