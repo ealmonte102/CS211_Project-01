@@ -13,7 +13,7 @@ public:
 	*/
 	Student ( );
 
-	Student (std::string first, std::string last, std::string id, int creds, double gpa, Date dob, Date matric);
+	Student (std::string first, std::string last, int id, int creds, double gpa, Date dob, Date matric);
 
 	//Accessors
 	int getCredits ( ) const;
@@ -24,7 +24,7 @@ public:
 
 	double getGpa ( ) const;
 
-	std::string getId ( ) const;
+	int getId ( ) const;
 
 	std::string getLastName ( ) const;
 
@@ -94,7 +94,7 @@ private:
 public:
 	std::string lastName;
 	std::string firstName;
-	std::string id;
+	int id;
 	std::string standing;
 	int credits;
 	double gpa;

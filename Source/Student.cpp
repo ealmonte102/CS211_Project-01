@@ -25,10 +25,10 @@ const double Student::MIN_GPA = 0.0;
 const double Student::MAX_GPA = 4.0;
 
 // Constructors
-Student::Student( ) : lastName(""), firstName(""), id(""), 
+Student::Student( ) : lastName(""), firstName(""), id(-1), 
 					standing(""), credits(-1), gpa(-1.0) { }
 
-Student::Student (string first, string last, std::string id, int creds, double gpa, Date dob, Date matric) 
+Student::Student (string first, string last, int id, int creds, double gpa, Date dob, Date matric) 
 	: lastName(last), firstName(first), id(id), credits(creds),
 	  gpa(gpa), dob(dob), matriculation(matric) {
 	if (credits < 0) {
@@ -62,7 +62,7 @@ double Student::getGpa( ) const {
 	return gpa;
 }
 
-string Student::getId( ) const {
+int Student::getId( ) const {
 	return id;
 }
 

@@ -10,7 +10,8 @@ public:
 	bool loginIsValid(std::string username, std::string password);
 	loginFlags attemptLogin( );
 	void exportRosters(const Roster* const* const rosterList, int size);
-	void importRosters( ) = delete;
+	void importRosters(Roster**& rosterList, int& rListSz, int& rListCap,
+					   Student**& studList, int& studListSz, int& studListCap);
 private:
 	std::string fileName;
 	std::fstream ioFile;

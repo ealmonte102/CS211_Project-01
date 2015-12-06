@@ -32,7 +32,10 @@ const string RosterSystem::selectOpts[numOfSelectOpts] = {
 };
 
 RosterSystem::RosterSystem( ) : loginStatus(NOT_LOGGED), rListSz(0), rListCap(0), rosterList(nullptr),
-                                eListSz(0), eListCap(0), enrollmentList(nullptr) {}
+                                eListSz(0), eListCap(0), enrollmentList(nullptr) {
+	RSFileManager import ("Roster.txt", false);
+	import.importRosters (rosterList, rListSz, rListCap, enrollmentList, eListSz, eListCap);
+}
 
 RosterSystem::~RosterSystem( ) {
 	for (int i = 0; i < rListSz; ++i) {
@@ -69,7 +72,7 @@ void RosterSystem::loginMenu( ) {
 			break;
 		case 'C':
 		case 'c': {
-			RSFileManager writeRosters ("RosterFile.txt", true);
+			RSFileManager writeRosters ("Roster.txt", true);
 			writeRosters.exportRosters (rosterList, rListSz);
 		}
 			break;
@@ -225,14 +228,17 @@ void RosterSystem::removeRoster(std::string courseCode) {
 		return;
 	}
 	clearScreen ( );
-	string titleBarStars = RosterSystemUtils::getStarDesign (23 + rosterList[location]->getCourseName ( ).length ( ));
+
 	//		Displays a title as:
 	//*******************************
 	//  CourseName Has Been Deleted 
 	//*******************************
+
+	string titleBarStars = RosterSystemUtils::getStarDesign (23 + rosterList[location]->getCourseName ( ).length ( ));
 	cout << titleBarStars << "\n";
 	cout << "  " << rosterList[location]->getCourseName() << " Has Been Deleted\n";
 	cout << titleBarStars << "\n";
+
 	//Shifts all rosters over to the left.
 	delete rosterList[location];
 	for (; location < rListSz - 1; ++location) {

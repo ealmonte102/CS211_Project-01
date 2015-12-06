@@ -223,7 +223,7 @@ int Roster::findStudentHelper(int* foundStudents, string lastName) const {
 	int numFound = 0;
 	for (int i = 0; i < numEnrolled; ++i) {
 		if (upperConvert(studentList[i]->getLastName()) == upperConvert(lastName)) {
-			cout << numFound + 1 << ". " + studentList[i]->getFullName() + ", " + studentList[i]->getId() + "\n";
+			cout << numFound + 1 << ". " + studentList[i]->getFullName() + ", " << studentList[i]->getId() << "\n";
 			foundStudents[numFound] = i;
 			numFound++;
 		}
