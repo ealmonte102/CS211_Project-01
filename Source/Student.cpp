@@ -179,21 +179,21 @@ bool Student::operator>=(const Student& otherStudent) const {
 }
 
 istream& operator>>(istream& input, Student& currentStudent) {
-	cout << "Change first name(Y/N)? ";
+	cout << "Change First Name(Y/N)? ";
 	if (getYesOrNo()) {
-		cout << "First name: ";
+		cout << "First Name: ";
 		input >> currentStudent.firstName;
-		currentStudent.firstName = upperConvert(currentStudent.firstName);
+		currentStudent.firstName = currentStudent.firstName;
 	}
-	cout << "Change last name(Y/N)? ";
+	cout << "Change Last Name(Y/N)? ";
 	if (getYesOrNo()) {
-		cout << "Last name: ";
+		cout << "Last Name: ";
 		input >> currentStudent.lastName;
-		currentStudent.lastName = upperConvert(currentStudent.lastName);
+		currentStudent.lastName = currentStudent.lastName;
 	}
 	cout << "Change Student ID(Y/N)? ";
 	if (getYesOrNo ( )) {
-		cout << "New ID: ";
+		cout << "ID: ";
 		input >> currentStudent.id;
 	}
 	cout << "Change credits earned(Y/N)? ";
@@ -205,17 +205,17 @@ istream& operator>>(istream& input, Student& currentStudent) {
 	}
 	cout << "Change GPA(Y/N)? ";
 	if (getYesOrNo()) {
-		int gradeAvg;
-		cout << "Current GPA: ";
+		double gradeAvg;
+		cout << "GPA: ";
 		input >> gradeAvg;
 		currentStudent.setGpa(gradeAvg);
 	}
-	cout << "Change date of birth?(Y/N)? ";
+	cout << "Change Date of Birth?(Y/N)? ";
 	if (getYesOrNo()) {
 		cout << "Date of Birth:\n";
 		cin >> currentStudent.dob;
 	}
-	cout << "Change matriculation date(Y/N)? ";
+	cout << "Change Matriculation Date(Y/N)? ";
 	if (getYesOrNo()) {
 		cout << "Matriculation Date:\n";
 		cin >> currentStudent.matriculation;
@@ -226,10 +226,10 @@ istream& operator>>(istream& input, Student& currentStudent) {
 ostream& operator<<(ostream& output, const Student& currentStudent) {
 	output << "First Name: " << currentStudent.firstName << "\n";
 	output << "Last Name: " << currentStudent.lastName << "\n";
-	output << "ID Number: " << currentStudent.id << "\n";
-	output << "Gpa: " << currentStudent.gpa << "\n";
+	output << "ID: " << currentStudent.id << "\n";
+	output << "GPA: " << currentStudent.gpa << "\n";
 	output << "Credits Earned: " << currentStudent.credits << "\n";
-	output << "Current Standing: " << currentStudent.standing << "\n";
+	output << "Standing: " << currentStudent.standing << "\n";
 	output << "Date of Birth: " << currentStudent.dob << "\n";
 	output << "Matriculation Date: " << currentStudent.matriculation << "\n";
 	return output;

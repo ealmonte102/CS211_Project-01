@@ -10,57 +10,59 @@ class Roster {
 public:
 	//Constructors
 	Roster( );
-
+	
 	Roster(std::string course, std::string courseNumber, std::string professor, int credits, int maxCapacity);
-
+	
 	~Roster( );
-
+	
 	//Accessor Functions
+	
 	std::string getCourseCode( ) const;
-
+	
 	std::string getCourseName( ) const;
-
+	
 	std::string getInstructorName( ) const;
-
-	int getNumEnrolled ( ) const;
-
+	
+	int getNumEnrolled( ) const;
+	
 	int getNumOfCredits( ) const;
-
-	void displayInfo ( ) const;
-
-	void listAllStudents ( ) const;
+	
+	void displayInfo( ) const;
+	
+	void listAllStudents( ) const;
 	
 	//Allows a student to be passed to the roster and added if the capacity has not been reached.
 	void addStudent(Student* aStudent);
-
+	
 	//Allows a list of students to be passed. Will add as many students as possible in sequential order, until the capacity has been reached.
 	void addStudent(Student* newStudents[], int numOfStudents);
-
-	void editStudent (std::string lastName) const;
+	
+	void editStudent(std::string lastName) const;
 	
 	//Removes the student located at a particular index in the roster.
 	void removeStudent(std::string lastName);
-
-	void driver( );
-
+	
 	void removeAll( );
+	
+	void setCourseName(std::string cN);
+	
+	void setCourseCode(std::string cC);
+	
+	void setInstructorName(std::string iN);
+	
+	void setCredits(int creds);
 
-	void setCourseName (std::string cN);
-	void setCourseCode (std::string cC);
-	void setInstructorName (std::string iN);
-	void setCredits (int creds);
+	void sortUp( ) const;
 
-	void sortUp ( ) const;
-
-	void sortDown ( ) const;
+	void sortDown( ) const;
 
 	//Overloaded Operators
+	
 	friend std::ostream& operator<<(std::ostream& output, const Roster& currentRoster);
 
 	friend std::istream& operator>>(std::istream& input, Roster& currentRoster);
 
 	const Student& operator[](int index) const;
-
 private:
 	void grow( );
 
@@ -86,5 +88,6 @@ private:
 	};
 };
 #endif //ROSTER_HPP
+
 
 

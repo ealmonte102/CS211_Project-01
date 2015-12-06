@@ -32,7 +32,7 @@ Roster::Roster(std::string course, std::string courseNumber, std::string instruc
 	if (credits <= 0 || credits > 4) {
 		cout << "Invalid number of credits given: " << credits << "\n";
 		cout << "Please try again: ";
-		credits = getValidInt();
+		this->credits = getValidInt();
 	}
 	if (capacity < 0) {
 		capacity = 0;
@@ -75,39 +75,16 @@ void Roster::addStudent(Student* newStudents[], int numOfStudents) {
 }
 
 void Roster::editStudent(std::string lastName) const {
+	clearScreen ( );
 	int location = findStudent(lastName);
 	if (location != STUDENT_NOT_FOUND && location != NONE_CHOSEN) {
+		clearScreen ( );
+		cout << "******************************\n";
+		cout << "      Editing Student         \n";
+		cout << "******************************\n";
+		cout << *studentList[location] << "\n";
 		cin >> *studentList[location];
 	}
-}
-
-//Test various components of the Roster class ([], <<, >>, removeStudent(), sort(), removeAll()).
-void Roster::driver( ) {
-	cout << "=====Testing >> operator=====\n";
-	cin >> *this;
-
-	cout << "=====Testing << operator=====\n";
-	cout << *this << "\n";
-
-	if (studentList[0] != nullptr) {
-		cout << "=====Testing [] operator=====\n";
-		cout << "Roster[0]:\n" << (*this)[0] << "\n";
-	}
-
-	cout << "=====Testing removeStudent=====\n";
-	cout << "Please enter a last name: ";
-	string inputLastName;
-	getline(cin, inputLastName);
-	removeStudent(inputLastName);
-	cout << "After removeStudent(" << inputLastName << "):\n" << *this << "\n";
-
-	cout << "=====Testing sort()=====\n";
-	sortUp();
-	cout << *this << "\n";
-
-	cout << "=====Testing removeAll()=====\n";
-	removeAll();
-	cout << *this << "\n";
 }
 
 //Removes all students from the roster. Capacity is left unchanged.
@@ -154,16 +131,20 @@ int Roster::getNumOfCredits( ) const {
 }
 
 void Roster::displayInfo( ) const {
-	RosterUtils::printSpikeDesign (courseName.length() + 9);
+	int maxLength = courseName.length ( );
+	if (instructor.length() > maxLength) { maxLength = instructor.length ( ) + string ("Instructor: ").length ( );}
+	else { maxLength += string ("Course: ").length ( ); }
+	RosterUtils::printSpikeDesign (maxLength);
 	cout << "Course: " << courseName << "\n";
 	cout << "Course Code: " << courseCode << "\n";
 	cout << "Instructor: " << instructor << "\n";
 	cout << "Credits: " << credits << "\n";
 	cout << "Students Enrolled: " << numEnrolled << "/" << capacity << "\n";
-	RosterUtils::printSpikeDesignRev (courseName.length() + 9);
+	RosterUtils::printSpikeDesignRev (maxLength);
 }
 
 void Roster::listAllStudents( ) const {
+	sortUp ( );
 	if (numEnrolled != 0) {
 		cout << "______________________________\n";
 		for (int i = 0; i < numEnrolled; ++i) {
@@ -194,11 +175,16 @@ int Roster::findStudent(string lastName) const {
 	//foundStudents: Holds the indices of where the students are located.
 	//numFound: Holds the a count referring to the number of students found.
 	int* foundStudents = new int[numEnrolled];
+	cout << "Students Found:\n";
 	int numFound = findStudentHelper(foundStudents, lastName);
 
 	//If no students are found, return to the caller.
 	if (numFound == 0) {
-		cout << "No students with a last name of " << lastName << " were found.\n";
+		clearScreen ( );
+		cout << "******************************\n";
+		cout << "            ERROR!            \n";
+		cout << "******************************\n";
+		cout << "No students with a last name of \"" << lastName << "\" were found.\n";
 		return STUDENT_NOT_FOUND;
 	}
 

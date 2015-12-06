@@ -33,7 +33,7 @@ const string RosterSystem::selectOpts[numOfSelectOpts] = {
 
 RosterSystem::RosterSystem( ) : loginStatus(NOT_LOGGED), rListSz(0), rListCap(0), rosterList(nullptr),
                                 eListSz(0), eListCap(0), enrollmentList(nullptr) {
-	RSFileManager import ("Roster.txt", false);
+	RSFileManager import ("rosters.txt", false);
 	import.importRosters (rosterList, rListSz, rListCap, enrollmentList, eListSz, eListCap);
 }
 
@@ -62,7 +62,7 @@ void RosterSystem::loginMenu( ) {
 	switch(choice) {
 		case 'A':
 		case 'a': {
-			RSFileManager database ("Database.txt", false);
+			RSFileManager database ("database.txt", false);
 			loginStatus = database.attemptLogin ( );
 		}
 		case 'B':
@@ -72,7 +72,7 @@ void RosterSystem::loginMenu( ) {
 			break;
 		case 'C':
 		case 'c': {
-			RSFileManager writeRosters ("Roster.txt", true);
+			RSFileManager writeRosters ("rosters.txt", true);
 			writeRosters.exportRosters (rosterList, rListSz);
 		}
 			break;
@@ -150,9 +150,8 @@ void RosterSystem::displayAdminMenu( ) {
 	}
 }
 
-void RosterSystem::displayUserMenu( ) {
-	int i = numOfMenuOpts - 1;
-	cout << i + 1 << ") " << menuOpts[numOfMenuOpts - 1] << "\n";
+void RosterSystem::displayUserMenu( ) {;
+	cout << 1 << ") " << menuOpts[numOfMenuOpts - 1] << "\n";
 }
 
 void RosterSystem::addToEnrollmentList(Student* aStudent) {
@@ -284,7 +283,7 @@ void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 	cout << "Course: " << selectedRoster.getCourseName() << "\n";
 	cout << "Code: " << selectedRoster.getCourseCode() << "\n";
 	for (int i = 0; i < numOfSelectOpts; ++i) {
-		cout << static_cast<char>('a' + i) << ") " << selectOpts[i] << "\n";
+		cout << static_cast<char>('A' + i) << ") " << selectOpts[i] << "\n";
 	}
 	string userChoice;
 	cout << "Please choose an option(a-d): ";
@@ -341,7 +340,7 @@ void RosterSystem::displayAllRosters( ) const {
 		return;
 	}
 	cout << "******************************\n";
-	cout << "      Display All Rosters     \n";
+	cout << "    Displaying All Rosters    \n";
 	cout << "******************************\n";
 	for (int i = 0; i < rListSz; ++i) {
 		rosterList[i]->displayInfo();
