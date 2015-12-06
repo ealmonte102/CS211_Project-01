@@ -11,47 +11,47 @@ public:
 	  gpa and credits set to -1.0 and -1, respectively. Date and matriculation are both set to
 	  the default date of Janurary 1, 1970.
 	*/
-	Student ( );
+	Student( );
 
-	Student (std::string first, std::string last, int id, int creds, double gpa, Date dob, Date matric);
+	Student(std::string first, std::string last, int id, int creds, double gpa, Date dob, Date matric);
 
 	//Accessors
-	int getCredits ( ) const;
+	int getCredits( ) const;
 
-	const Date& getDob ( ) const;
+	const Date& getDob( ) const;
 
-	std::string getFirstName ( ) const;
+	std::string getFirstName( ) const;
 
-	double getGpa ( ) const;
+	double getGpa( ) const;
 
-	int getId ( ) const;
+	int getId( ) const;
 
-	std::string getLastName ( ) const;
+	std::string getLastName( ) const;
 
-	const Date& getMatric ( ) const;
+	const Date& getMatric( ) const;
 
-	std::string getStanding ( ) const;
+	std::string getStanding( ) const;
 
 	//Returns the student's full name seperated by a space.
-	std::string getFullName ( ) const;
+	std::string getFullName( ) const;
 
 	//Mutators
 
 	//Sets the student's credits to the specified parameter
 	//and updates thier current standing.
-	void setCredits (int creds);
+	void setCredits(int creds);
 
-	void setDob (const Date& birthday);
+	void setDob(const Date& birthday);
 
-	void setFirstName (std::string first);
+	void setFirstName(std::string first);
 
-	void setGpa (double gradeAvg);
+	void setGpa(double gradeAvg);
 
-	void setId (int id);
+	void setId(int id);
 
-	void setLastName (std::string last);
+	void setLastName(std::string last);
 
-	void setMatric (const Date& matric);
+	void setMatric(const Date& matric);
 
 	//Overloaded Operators
 
@@ -87,7 +87,7 @@ public:
 
 private:
 	//Sets the standing based on the student's acquired credits.
-	void setStanding ( );
+	void setStanding( );
 
 	static const double MAX_GPA;
 	static const double MIN_GPA;
@@ -103,3 +103,5 @@ public:
 };
 
 #endif //STUDENT_HPP
+
+

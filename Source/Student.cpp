@@ -25,10 +25,10 @@ const double Student::MIN_GPA = 0.0;
 const double Student::MAX_GPA = 4.0;
 
 // Constructors
-Student::Student( ) : lastName(""), firstName(""), id(-1), 
-					standing(""), credits(-1), gpa(-1.0) { }
+Student::Student( ) : lastName(""), firstName(""), id(-1),
+                      standing(""), credits(-1), gpa(-1.0) { }
 
-Student::Student (string first, string last, int id, int creds, double gpa, Date dob, Date matric) 
+Student::Student(string first, string last, int id, int creds, double gpa, Date dob, Date matric)
 	: lastName(last), firstName(first), id(id), credits(creds),
 	  gpa(gpa), dob(dob), matriculation(matric) {
 	if (credits < 0) {
@@ -192,7 +192,7 @@ istream& operator>>(istream& input, Student& currentStudent) {
 		currentStudent.lastName = currentStudent.lastName;
 	}
 	cout << "Change Student ID(Y/N)? ";
-	if (getYesOrNo ( )) {
+	if (getYesOrNo()) {
 		cout << "ID: ";
 		input >> currentStudent.id;
 	}
@@ -234,3 +234,4 @@ ostream& operator<<(ostream& output, const Student& currentStudent) {
 	output << "Matriculation Date: " << currentStudent.matriculation << "\n";
 	return output;
 }
+

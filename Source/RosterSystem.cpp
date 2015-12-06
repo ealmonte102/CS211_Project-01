@@ -13,10 +13,11 @@ using std::cin;
 using std::string;
 
 namespace RosterSystemUtils {
-	int getMenuOptSelection (int start, int end);
-	char getLoginOptSelection ( );
-	string getStarDesign (int length);
+	char getMenuOptSelection(bool isAdmin);
+	char getLoginOptSelection( );
+	string getStarDesign(int length);
 }
+
 const string RosterSystem::menuOpts[numOfMenuOpts] = {
 	"Create a new Roster",
 	"Drop a Roster",
@@ -33,8 +34,8 @@ const string RosterSystem::selectOpts[numOfSelectOpts] = {
 
 RosterSystem::RosterSystem( ) : loginStatus(NOT_LOGGED), rListSz(0), rListCap(0), rosterList(nullptr),
                                 eListSz(0), eListCap(0), enrollmentList(nullptr) {
-	RSFileManager import ("rosters.txt", false);
-	import.importRosters (rosterList, rListSz, rListCap, enrollmentList, eListSz, eListCap);
+	RSFileManager import("rosters.txt", false);
+	import.importRosters(rosterList, rListSz, rListCap, enrollmentList, eListSz, eListCap);
 }
 
 RosterSystem::~RosterSystem( ) {
@@ -49,7 +50,7 @@ RosterSystem::~RosterSystem( ) {
 }
 
 void RosterSystem::loginMenu( ) {
-	clearScreen ( );
+	clearScreen();
 	loginStatus = USER;
 	cout << "********************************\n";
 	cout << "  Welcome To SchoolManager v.1  \n";
@@ -58,57 +59,52 @@ void RosterSystem::loginMenu( ) {
 	cout << "B) User Mode\n";
 	cout << "C) Exit\n";
 	cout << "Please choose an option: ";
-	char choice = RosterSystemUtils::getLoginOptSelection ( );
-	switch(choice) {
+	char choice = RosterSystemUtils::getLoginOptSelection();
+	switch (choice) {
 		case 'A':
-		case 'a': {
-			RSFileManager database ("database.txt", false);
-			loginStatus = database.attemptLogin ( );
-		}
+		case 'a':
+			{
+				RSFileManager database("database.txt", false);
+				loginStatus = database.attemptLogin();
+			}
 		case 'B':
 		case 'b':
-			mainMenu ( );
-			loginMenu ( );
+			mainMenu();
+			loginMenu();
 			break;
 		case 'C':
-		case 'c': {
-			RSFileManager writeRosters ("rosters.txt", true);
-			writeRosters.exportRosters (rosterList, rListSz);
-		}
+		case 'c':
+			{
+				RSFileManager writeRosters("rosters.txt", true);
+				writeRosters.exportRosters(rosterList, rListSz);
+			}
 			break;
 		default:
 			cout << "Invalid choice please try again.\n";
 			cout << "Press ENTER to continue . . .";
-			cin.get ( );
-			loginMenu ( );
+			cin.get();
+			loginMenu();
 	}
 }
 
 void RosterSystem::mainMenu( ) {
-	clearScreen ( );
-	cout << "******************************\n";
-	cout << "          Main Menu           \n";
-	cout << "******************************\n";
-	int startOption = 1, endOption;
+	clearScreen();
+	cout << "********************************\n";
+	cout << "           Main Menu            \n";
+	cout << "********************************\n";
 	if (loginStatus == SUPERVISOR) {
-		endOption = numOfMenuOpts;
 		displayAdminMenu();
 	} else {
-		endOption = 1;
 		displayUserMenu();
 	}
 	cout << "Please choose an option(q to Quit): ";
-	int choice = RosterSystemUtils::getMenuOptSelection(startOption, endOption);
-
-	if (choice == 1 && loginStatus != SUPERVISOR) {
-		choice = 5;
-	}
+	char choice = RosterSystemUtils::getMenuOptSelection(loginStatus == SUPERVISOR);
 
 	switch (choice) {
-		case 1:
+		case '1':
 			addRoster();
 			break;
-		case 2:
+		case '2':
 			{
 				string courseNumber;
 				cout << "Please enter the rosters course number: ";
@@ -116,7 +112,7 @@ void RosterSystem::mainMenu( ) {
 				removeRoster(courseNumber);
 			}
 			break;
-		case 3:
+		case '3':
 			{
 				cout << "Please enter the rosters course number: ";
 				string courseNumber;
@@ -124,10 +120,10 @@ void RosterSystem::mainMenu( ) {
 				displayRoster(courseNumber);
 			}
 			break;
-		case 4:
+		case '4':
 			displayAllRosters();
 			break;
-		case 5:
+		case '5':
 			{
 				string courseNumber;
 				cout << "Please enter the rosters course number: ";
@@ -135,9 +131,12 @@ void RosterSystem::mainMenu( ) {
 				selectRoster(courseNumber);
 			}
 			break;
-		default:
+		case 'Q':
+		case 'q':
 			cout << "Exiting to login menu.\n";
 			return;
+		default:
+			mainMenu();
 	}
 	cout << "Press ENTER to continue . . .";
 	cin.get();
@@ -150,7 +149,8 @@ void RosterSystem::displayAdminMenu( ) {
 	}
 }
 
-void RosterSystem::displayUserMenu( ) {;
+void RosterSystem::displayUserMenu( ) {
+	;
 	cout << 1 << ") " << menuOpts[numOfMenuOpts - 1] << "\n";
 }
 
@@ -167,9 +167,9 @@ void RosterSystem::addToEnrollmentAndRoster(Roster& selectedRoster) {
 		growEnrollmentList();
 	}
 	Student* studentToAdd = new Student();
-	cout << "******************************\n";
-	cout << "      New Student Added       \n";
-	cout << "******************************\n";
+	cout << "********************************\n";
+	cout << "        New Student Added       \n";
+	cout << "********************************\n";
 	cin >> *studentToAdd;
 	enrollmentList[eListSz++] = studentToAdd;
 	selectedRoster.addStudent(studentToAdd);
@@ -182,11 +182,11 @@ int RosterSystem::findRoster(std::string courseCode) const {
 	}
 	int foundIndex = NOT_FOUND;
 	for (int i = 0; i < rListSz; ++i) {
-		if (courseCode == rosterList[i]->getCourseCode()) {
+		if (upperConvert(courseCode) == upperConvert(rosterList[i]->getCourseCode())) {
 			foundIndex = i;
 		}
 	}
-	if(foundIndex == NOT_FOUND) {
+	if (foundIndex == NOT_FOUND) {
 		cout << "No roster with a course number of: " << courseCode << " was found.\n";
 	}
 	return foundIndex;
@@ -198,15 +198,15 @@ void RosterSystem::addRoster( ) {
 		growRosterList();
 	}
 	Roster* rosterToAdd = new Roster;
-	cout << "******************************\n";
-	cout << "      New Roster Created      \n";
-	cout << "******************************\n";
+	cout << "********************************\n";
+	cout << "       New Roster Created       \n";
+	cout << "********************************\n";
 	cin >> *rosterToAdd;
 	rosterList[rListSz++] = rosterToAdd;
 }
 
 void RosterSystem::selectRoster(std::string courseNumber) {
-	int location = findRoster (courseNumber);
+	int location = findRoster(courseNumber);
 	if (location == NOT_FOUND || location == EMPTY_LIST) {
 		return;
 	}
@@ -226,14 +226,14 @@ void RosterSystem::removeRoster(std::string courseCode) {
 	if (location == NOT_FOUND || location == EMPTY_LIST) {
 		return;
 	}
-	clearScreen ( );
+	clearScreen();
 
 	//		Displays a title as:
 	//*******************************
 	//  CourseName Has Been Deleted 
 	//*******************************
 
-	string titleBarStars = RosterSystemUtils::getStarDesign (23 + rosterList[location]->getCourseName ( ).length ( ));
+	string titleBarStars = RosterSystemUtils::getStarDesign(23 + rosterList[location]->getCourseName().length());
 	cout << titleBarStars << "\n";
 	cout << "  " << rosterList[location]->getCourseName() << " Has Been Deleted\n";
 	cout << titleBarStars << "\n";
@@ -277,16 +277,16 @@ void RosterSystem::growRosterList( ) {
 
 void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 	clearScreen();
-	cout << "******************************\n";
-	cout << "      Editing Roster          \n";
-	cout << "******************************\n";
+	cout << "********************************\n";
+	cout << "         Editing Roster         \n";
+	cout << "********************************\n";
 	cout << "Course: " << selectedRoster.getCourseName() << "\n";
 	cout << "Code: " << selectedRoster.getCourseCode() << "\n";
 	for (int i = 0; i < numOfSelectOpts; ++i) {
 		cout << static_cast<char>('A' + i) << ") " << selectOpts[i] << "\n";
 	}
 	string userChoice;
-	cout << "Please choose an option(a-d): ";
+	cout << "Please choose an option(A-D): ";
 	getline(cin, userChoice);
 
 	switch (userChoice[0]) {
@@ -324,24 +324,24 @@ void RosterSystem::adminSelectOpts(Roster& selectedRoster) {
 }
 
 void RosterSystem::displayRoster(std::string courseNumber) const {
-	clearScreen ( );
+	clearScreen();
 	int location = findRoster(courseNumber);
 	if (location == NOT_FOUND || location == EMPTY_LIST) {
 		return;
 	}
 	Roster* rosterToDisplay = rosterList[location];
-	rosterToDisplay->displayInfo();
+	cout << *rosterToDisplay;
 }
 
 void RosterSystem::displayAllRosters( ) const {
-	clearScreen ( );
-	if(rListSz == 0) {
+	clearScreen();
+	if (rListSz == 0) {
 		cout << "There are no rosters in the system.\n";
 		return;
 	}
-	cout << "******************************\n";
-	cout << "    Displaying All Rosters    \n";
-	cout << "******************************\n";
+	cout << "********************************\n";
+	cout << "     Displaying All Rosters     \n";
+	cout << "********************************\n";
 	for (int i = 0; i < rListSz; ++i) {
 		rosterList[i]->displayInfo();
 		cout << "\n";
@@ -350,9 +350,9 @@ void RosterSystem::displayAllRosters( ) const {
 
 void RosterSystem::userSelectOpts(Roster& selectedRoster) {
 	clearScreen();
-	cout << "******************************\n";
-	cout << "      Editing Roster          \n";
-	cout << "******************************\n";
+	cout << "********************************\n";
+	cout << "         Editing Roster         \n";
+	cout << "********************************\n";
 	cout << "Course: " << selectedRoster.getCourseName() << "\n";
 	cout << "Code: " << selectedRoster.getCourseCode() << "\n";
 
@@ -361,9 +361,11 @@ void RosterSystem::userSelectOpts(Roster& selectedRoster) {
 		cout << static_cast<char>('a' + i) << ") " << selectOpts[i] << "\n";
 	}
 	string userChoice;
-	cout << "Please choose an option(a-c): ";
+	cout << "Please choose an option(A-C): ";
 	getline(cin, userChoice);
-
+	if (userChoice.length() > 0) {
+		userChoice = "";
+	}
 	switch (userChoice[0]) {
 		case 'A':
 		case 'a':
@@ -395,27 +397,35 @@ void RosterSystem::userSelectOpts(Roster& selectedRoster) {
 }
 
 namespace RosterSystemUtils {
-	int getMenuOptSelection (int start, int end) {
+	char getMenuOptSelection(bool isAdmin) {
 		string choice;
-		do {
-			getline (cin, choice);
-		} while (choice[0] - '0' < start || choice[0] - '0' > end &&
-				 choice != "q" && choice != "Q");
-		int selection = choice[0] - '0';
-		return selection;
+		getline(cin, choice);
+		if (choice.length() > 1) {
+			return '?';
+		}
+		if (choice[0] == 'Q' || choice[0] == 'q') {
+			return choice[0];
+		}
+		if (choice[0] > '1' && !isAdmin) {
+			return '?';
+		}
+		if (choice[0] == '1' && !isAdmin) {
+			return '5';
+		}
+		return choice[0];
 	}
 
-	char getLoginOptSelection ( ) {
+	char getLoginOptSelection( ) {
 		string choice;
 		do {
-			getline (cin, choice);
+			getline(cin, choice);
 		} while (choice != "A" && choice != "B" && choice != "C" &&
-				 choice != "a" && choice != "b" && choice != "c");
+			choice != "a" && choice != "b" && choice != "c");
 		return choice[0];
 
 	}
 
-	string getStarDesign (int length) {
+	string getStarDesign(int length) {
 		string starDesign = "";
 		for (int i = 0; i < length; ++i) {
 			starDesign += "*";

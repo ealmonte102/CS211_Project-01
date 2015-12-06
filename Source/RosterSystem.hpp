@@ -6,52 +6,56 @@
 
 class RosterSystem {
 public:
-	RosterSystem ( );
-	
-	~RosterSystem ( );
+	RosterSystem( );
 
-	void loginMenu ( );
+	~RosterSystem( );
+
+	void loginMenu( );
 
 private:
-	void mainMenu ( );
+	void mainMenu( );
 
-	static void displayAdminMenu ( );
+	static void displayAdminMenu( );
 
-	static void displayUserMenu ( );
+	static void displayUserMenu( );
 
-	void addToEnrollmentAndRoster (Roster& selectedRoster);
-	
-	void addToEnrollmentList (Student* aStudent);
+	void addToEnrollmentAndRoster(Roster& selectedRoster);
 
-	void addRoster ( );
+	void addToEnrollmentList(Student* aStudent);
+
+	void addRoster( );
 
 	//Function which allows supervisor to use the passed Roster. Functions provided listed in selectOps array.
-	void adminSelectOpts (Roster& selectedRoster);
+	void adminSelectOpts(Roster& selectedRoster);
 
-	void displayRoster (std::string courseNumber) const;
+	void displayRoster(std::string courseNumber) const;
 
-	void displayAllRosters () const;
+	void displayAllRosters( ) const;
 
-	int findRoster (std::string courseCode) const;
+	int findRoster(std::string courseCode) const;
 
-	void growRosterList ( );
+	void growRosterList( );
 
-	void growEnrollmentList ( );
-	
-	void removeRoster (std::string courseNumber);
+	void growEnrollmentList( );
 
-	void selectRoster (std::string courseNumber);
+	void removeRoster(std::string courseNumber);
 
-	void userSelectOpts (Roster& selectedRoster);	
-	
-	RosterSystem (const RosterSystem& rhs) = delete;
-	
+	void selectRoster(std::string courseNumber);
+
+	void userSelectOpts(Roster& selectedRoster);
+
+	RosterSystem(const RosterSystem& rhs) = delete;
+
 	RosterSystem& operator=(const RosterSystem& rhs) = delete;
-	
+
 	class RSFileManager;
+
 	enum findFlags { NOT_FOUND = -2, EMPTY_LIST };
+
 	enum loginFlags {
-		NOT_LOGGED, USER, SUPERVISOR
+		NOT_LOGGED,
+		USER,
+		SUPERVISOR
 	} loginStatus;
 
 	static const int numOfMenuOpts = 5;
@@ -59,15 +63,16 @@ private:
 
 	static const int numOfSelectOpts = 4;
 	static const std::string selectOpts[numOfSelectOpts];
-	
+
 	int rListSz;
 	int rListCap;
 	Roster** rosterList;
-	
+
 	int eListSz;
 	int eListCap;
 	Student** enrollmentList;
 };
 
 #endif //RosterSystem_HPP
+
 

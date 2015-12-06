@@ -64,27 +64,27 @@ RosterSystem::loginFlags RosterSystem::RSFileManager::attemptLogin( ) {
 void RosterSystem::RSFileManager::exportRosters(const Roster* const* const rosterList, int size) {
 	for (int i = 0; i < size; ++i) {
 		const Roster* currentRoster = rosterList[i];
-		ioFile << rosterList[i]->getCourseName ( ) << " | ";
-		ioFile << rosterList[i]->getCourseCode ( ) << " | ";
-		ioFile << rosterList[i]->getNumOfCredits ( ) << " | ";
-		ioFile << rosterList[i]->getInstructorName ( ) << "\n";
-		int numOfStudents = rosterList[i]->getNumEnrolled ( );
+		ioFile << rosterList[i]->getCourseName() << " | ";
+		ioFile << rosterList[i]->getCourseCode() << " | ";
+		ioFile << rosterList[i]->getNumOfCredits() << " | ";
+		ioFile << rosterList[i]->getInstructorName() << "\n";
+		int numOfStudents = rosterList[i]->getNumEnrolled();
 		for (int j = 0; j < numOfStudents; ++j) {
 			const Student currentStudent = currentRoster->operator[](j);
-			ioFile << currentStudent.getFirstName ( ) << " | ";
-			ioFile << currentStudent.getLastName ( ) << " |";
-			ioFile << currentStudent.getId ( ) << "|";
-			ioFile << currentStudent.getStanding ( ) << "|";
-			ioFile << currentStudent.getCredits ( ) << "|";
-			ioFile << currentStudent.getGpa ( ) << "|";
-			const Date studDob= currentStudent.getDob ( );
-			ioFile << studDob.getMonthNum ( ) << "/";
-			ioFile << studDob.getDay ( ) << "/";
-			ioFile << studDob.getYear ( ) << "|";
-			const Date studMatric = currentStudent.getMatric ( );
-			ioFile << studMatric.getMonthNum ( ) << "/";
-			ioFile << studMatric.getDay ( ) << "/";
-			ioFile << studMatric.getYear ( ) << "\n";
+			ioFile << currentStudent.getFirstName() << " | ";
+			ioFile << currentStudent.getLastName() << " |";
+			ioFile << currentStudent.getId() << "|";
+			ioFile << currentStudent.getStanding() << "|";
+			ioFile << currentStudent.getCredits() << "|";
+			ioFile << currentStudent.getGpa() << "|";
+			const Date studDob = currentStudent.getDob();
+			ioFile << studDob.getMonthNum() << "/";
+			ioFile << studDob.getDay() << "/";
+			ioFile << studDob.getYear() << "|";
+			const Date studMatric = currentStudent.getMatric();
+			ioFile << studMatric.getMonthNum() << "/";
+			ioFile << studMatric.getDay() << "/";
+			ioFile << studMatric.getYear() << "\n";
 		}
 		ioFile << "end_roster|";
 		if (i != size - 1) {

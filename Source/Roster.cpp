@@ -6,6 +6,7 @@
 #include "Utilities.hpp"
 #include <cstdlib>
 #include <iostream>
+#include <string>
 
 using std::cout;
 using std::cin;
@@ -14,8 +15,9 @@ using std::ostream;
 using std::string;
 
 namespace RosterUtils {
-	void printSpikeDesign (int length);
-	void printSpikeDesignRev (int length);
+	void printSpikeDesign(int length);
+	void printSpikeDesignRev(int length);
+	void printCharacter(char character, int length);
 }
 
 //Constructors
@@ -75,13 +77,13 @@ void Roster::addStudent(Student* newStudents[], int numOfStudents) {
 }
 
 void Roster::editStudent(std::string lastName) const {
-	clearScreen ( );
+	clearScreen();
 	int location = findStudent(lastName);
 	if (location != STUDENT_NOT_FOUND && location != NONE_CHOSEN) {
-		clearScreen ( );
-		cout << "******************************\n";
-		cout << "      Editing Student         \n";
-		cout << "******************************\n";
+		clearScreen();
+		cout << "********************************\n";
+		cout << "         Editing Student        \n";
+		cout << "********************************\n";
 		cout << *studentList[location] << "\n";
 		cin >> *studentList[location];
 	}
@@ -131,20 +133,23 @@ int Roster::getNumOfCredits( ) const {
 }
 
 void Roster::displayInfo( ) const {
-	int maxLength = courseName.length ( );
-	if (instructor.length() > maxLength) { maxLength = instructor.length ( ) + string ("Instructor: ").length ( );}
-	else { maxLength += string ("Course: ").length ( ); }
-	RosterUtils::printSpikeDesign (maxLength);
+	int maxLength = courseName.length();
+	if (instructor.length() > maxLength) {
+		maxLength = instructor.length() + string("Instructor: ").length();
+	} else {
+		maxLength += string("Course: ").length();
+	}
+	RosterUtils::printSpikeDesign(maxLength);
 	cout << "Course: " << courseName << "\n";
 	cout << "Course Code: " << courseCode << "\n";
 	cout << "Instructor: " << instructor << "\n";
 	cout << "Credits: " << credits << "\n";
 	cout << "Students Enrolled: " << numEnrolled << "/" << capacity << "\n";
-	RosterUtils::printSpikeDesignRev (maxLength);
+	RosterUtils::printSpikeDesignRev(maxLength);
 }
 
 void Roster::listAllStudents( ) const {
-	sortUp ( );
+	sortUp();
 	if (numEnrolled != 0) {
 		cout << "______________________________\n";
 		for (int i = 0; i < numEnrolled; ++i) {
@@ -180,10 +185,10 @@ int Roster::findStudent(string lastName) const {
 
 	//If no students are found, return to the caller.
 	if (numFound == 0) {
-		clearScreen ( );
-		cout << "******************************\n";
-		cout << "            ERROR!            \n";
-		cout << "******************************\n";
+		clearScreen();
+		cout << "********************************\n";
+		cout << "             ERROR!             \n";
+		cout << "********************************\n";
 		cout << "No students with a last name of \"" << lastName << "\" were found.\n";
 		return STUDENT_NOT_FOUND;
 	}
@@ -246,18 +251,24 @@ void Roster::grow( ) {
 
 //Overloaded Operators
 ostream& operator<<(ostream& output, const Roster& currentRoster) {
-	output << "==============================\n";
+	int maxLength = currentRoster.getCourseName().length();
+	if (currentRoster.getInstructorName().length() > maxLength) {
+		maxLength = currentRoster.getInstructorName().length() + string("Instructor: ").length();
+	} else {
+		maxLength += string("Course: ").length();
+	}
+	RosterUtils::printCharacter('=', maxLength);
 	output << "Course: " << currentRoster.courseName << "\n";
 	output << "Course Code: " << currentRoster.courseCode << "\n";
 	output << "Instructor: " << currentRoster.instructor << "\n";
 	output << "Credits: " << currentRoster.credits << "\n";
 	output << "Students Enrolled: " << currentRoster.numEnrolled << "/" << currentRoster.capacity << "\n";
-	output << "______________________________\n";
+	RosterUtils::printCharacter('=', maxLength);
 	for (int i = 0; i < currentRoster.numEnrolled; ++i) {
 		output << currentRoster.studentList[i]->getLastName() + ", " + currentRoster.studentList[i]->getFirstName();
 		output << ": " << currentRoster.studentList[i]->getId() << "\n";
 	}
-	output << "------------------------------";
+	RosterUtils::printCharacter('_', maxLength);
 	return output;
 }
 
@@ -328,4 +339,12 @@ namespace RosterUtils {
 		}
 		cout << "\n";
 	}
+
+	void printCharacter(char character, int length) {
+		for (int i = 0; i < length; ++i) {
+			cout << character;
+		}
+		cout << "\n";
+	}
 }
+

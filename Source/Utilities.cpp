@@ -12,7 +12,7 @@ using std::string;
 
 void clearScreen( ) {
 #ifdef _WIN32
-	std::system ("CLS");
+	std::system("CLS");
 #elif _WIN64
 	std::system ("CLS");
 #else
@@ -54,3 +54,4 @@ string upperConvert(string data) {
 	}
 	return data;
 }
+

@@ -11,7 +11,6 @@ using std::string;
 
 int main( ) {
 	RosterSystem schoolManager;
-	schoolManager.loginMenu ( );
-
+	schoolManager.loginMenu();
 	return 0;
 }

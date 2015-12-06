@@ -11,7 +11,7 @@ public:
 	loginFlags attemptLogin( );
 	void exportRosters(const Roster* const* const rosterList, int size);
 	void importRosters(Roster**& rosterList, int& rListSz, int& rListCap,
-					   Student**& studList, int& studListSz, int& studListCap);
+	                   Student**& studList, int& studListSz, int& studListCap);
 private:
 	std::string fileName;
 	std::fstream ioFile;
